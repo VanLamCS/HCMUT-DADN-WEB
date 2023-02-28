@@ -18,10 +18,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
-route(app);
-app.use(notFound);
-app.use(errorHandler);
-
 const server = http.createServer(app);
 
 server.listen(PORT, () => {
@@ -35,3 +31,7 @@ const io = new Server(server, {
 });
 realtimeUpdate(io);
 io.listen(8000);
+
+route(app);
+app.use(notFound);
+app.use(errorHandler);
