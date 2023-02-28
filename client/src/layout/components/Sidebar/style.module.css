@@ -1,4 +1,4 @@
-.sidebar{
+.sidebar {
     flex: 1;
     position: sticky;
     height: 100vh;
@@ -7,15 +7,17 @@
     /* background-image: linear-gradient(to bottom, #33418A, #34428C); */
     background-color: #09006F;
 }
+
 .top {
     margin-bottom: 10px;
-    flex:1;
+    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: #0E1B6B;
 }
-.logoContent{
+
+.logoContent {
     font-size: 1.8rem;
     font-weight: 800;
     color: white;
@@ -25,10 +27,12 @@
     justify-content: center;
     align-items: center;
 }
+
 .center {
-    flex:12;
+    flex: 12;
 }
-.menuItem{
+
+.menuItem {
     display: flex;
     align-items: center;
     justify-content: left;
@@ -37,48 +41,52 @@
     margin-left: 20px;
     min-width: 100%;
 }
-.itemContent{
+
+.itemContent {
     font-size: 1.8rem;
     font-weight: 600;
     color: #8E92BC;
-    text-transform: capitalize!important;
+    text-transform: capitalize !important;
 }
 
-.itemContent.enable{
+.itemContent.enable {
     color: white
 }
 
-.bottom{
+.bottom {
     flex: 3;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.avatar{
+.avatar {
     width: 60px;
     height: 60px;
     object-fit: cover;
     border-radius: 50%;
 }
-.nameUser{
+
+.nameUser {
     margin-left: 10px;
     color: rgb(213, 213, 213);
     font-size: 15px;
     display: flex;
     flex-direction: column;
 }
+
 .nameUser p {
     width: 100%;
     text-align: center;
 }
 
-.pattern{
+.pattern {
     height: 100vh;
     object-fit: cover;
     position: relative;
 }
-.sidebarContent{
+
+.sidebarContent {
     position: absolute;
     flex: 1;
     height: 100vh;
