@@ -21,13 +21,13 @@ app.use(cors());
 const server = http.createServer(app);
 
 server.listen(PORT, () => {
-  console.log("Server is running on PORT: " + PORT);
+    console.log("Server is running on PORT: " + PORT);
 });
 
 const io = new Server(server, {
-  cors: {
-    origin: `${process.env.CLIENT_HOST}`,
-  },
+    cors: {
+        origin: `${process.env.CLIENT_HOST}`,
+    },
 });
 realtimeUpdate(io);
 io.listen(8000);
