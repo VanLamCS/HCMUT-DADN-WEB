@@ -22,6 +22,22 @@ const realtimeUpdate = (io) => {
     // Subscribe to the soild-moisture feed
     client.subscribe(`${username}/feeds/soild-moisture`);
     // console.log("Subscribe soild-moisture feed");
+
+    // Subscribe to the fan feed
+    client.subscribe(`${username}/feeds/fan`);
+    // console.log("Subscribe fan feed");
+
+    // Subscribe to the mode feed
+    client.subscribe(`${username}/feeds/mode`);
+    // console.log("Subscribe mode feed");
+
+    // Subscribe to the pump feed
+    client.subscribe(`${username}/feeds/pump`);
+    // console.log("Subscribe pump feed");
+
+    // Subscribe to the light feed
+    client.subscribe(`${username}/feeds/light`);
+    // console.log("Subscribe light feed");
   });
 
   client.on("message", (topic, message) => {
@@ -40,6 +56,22 @@ const realtimeUpdate = (io) => {
       // Emit a "soildMoistureUpdate" event with the new soild-moisture data
       io.emit("soildMoistureUpdate", { soildMoisture: data });
       console.log(`Soild-moisture: ${data}%`);
+    } else if (topic.endsWith("fan")) {
+      // Emit a "fanUpdate" event with the new fan data
+      io.emit("fanUpdate", { fan: data });
+      console.log(`Fan: ${data}`);
+    } else if (topic.endsWith("mode")) {
+      // Emit a "modeUpdate" event with the new mode data
+      io.emit("modeUpdate", { mode: data });
+      console.log(`Mode: ${data}`);
+    } else if (topic.endsWith("pump")) {
+      // Emit a "pumpUpdate" event with the new pump data
+      io.emit("pumpUpdate", { soildMoisture: data });
+      console.log(`Pump: ${data}`);
+    } else if (topic.endsWith("light")) {
+      // Emit a "lightUpdate" event with the new light data
+      io.emit("lightUpdate", { soildMoisture: data });
+      console.log(`Light: ${data}`);
     }
   });
 };
