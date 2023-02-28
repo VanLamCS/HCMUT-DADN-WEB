@@ -1,0 +1,26 @@
+.wrapApp{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.app{
+    /* width: 1440px; */
+    display: flex;
+    background-color: #f0f0f0;
+
+}
+.inner{
+    display: flex;
+    flex-direction: column;
+    flex: 5;
+    max-height: 100vh;
+    width: 1100px;
+}
+
+.children{
+    flex:11;
+    margin-left: 25px;
+    overflow: scroll;
+    margin-top: 20px;
+}
