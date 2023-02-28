@@ -5,21 +5,24 @@ import axios from "axios";
 const socket = io("http://localhost:5000"); // Replace with your server's URL
 
 function Test() {
-  const [temperature, setTemperature] = useState(0);
-  const [humidity, setHumidity] = useState(0);
-  const [soildMoisture, setSoildMoisture] = useState(0);
+  const [temperature, setTemperature] = useState(null);
+  const [humidity, setHumidity] = useState(null);
+  const [soildMoisture, setSoildMoisture] = useState(null);
 
-  axios.get("http://localhost:5000/api/data/lasttemperature").then((data) => {
-    setTemperature(data.data.data.value);
-  });
-  axios.get("http://localhost:5000/api/data/lasthumidity").then((data) => {
-    setHumidity(data.data.data.value);
-  });
-  axios.get("http://localhost:5000/api/data/lastsoildmoisture").then((data) => {
-    setSoildMoisture(data.data.data.value);
-  });
+  async function fetchData() {
+    const temperatureResponse = await axios.get("http://localhost:5000/api/data/lasttemperature");
+    const humidityResponse = await axios.get("http://localhost:5000/api/data/lasthumidity");
+    const soildMoistureResponse = await axios.get("http://localhost:5000/api/data/lastsoildmoisture");
 
+    console.log("check data: ", temperatureResponse.data.data.value)
+    setTemperature(temperatureResponse.data.data.value);
+    setHumidity(humidityResponse.data.data.value);
+    setSoildMoisture(soildMoistureResponse.data.data.value);
+  }
+
+  fetchData();
   useEffect(() => {
+
     socket.on("temperatureUpdate", ({ temperature }) => {
       setTemperature(temperature);
     });
@@ -35,9 +38,9 @@ function Test() {
 
   return (
     <div>
-      <p>Temperature: {temperature} &#8451;</p>
-      <p>Humidity: {humidity} %</p>
-      <p>Soild-moisture: {soildMoisture} %</p>
+      <p>Temperature: {temperature ? temperature : 'loading ...'} &#8451;</p>
+      <p>Humidity: {humidity ? humidity : 'loading...'} %</p>
+      <p>Soild-moisture: {soildMoisture ? soildMoisture : 'loading ...'} %</p>
     </div>
   );
 }
