@@ -2,8 +2,8 @@ import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 import { mockTransactions } from "../../data/mockData";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
-import ThermostatIcon from '@mui/icons-material/Thermostat';
-import PercentIcon from '@mui/icons-material/Percent';
+import ThermostatIcon from "@mui/icons-material/Thermostat";
+import PercentIcon from "@mui/icons-material/Percent";
 import Header from "../../components/Header";
 import LineChart from "../../components/LineChart";
 import GeographyChart from "../../components/GeographyChart";
@@ -46,27 +46,45 @@ const Dashboard = () => {
   const [renderSoildMoisture, setRenderSoildMoisture] = useState(0);
 
   useEffect(() => {
-    if (temperature != 0 && renderTemperature < temperature) {
+    if (
+      temperature != 0 &&
+      Math.round(renderTemperature) != Math.round(temperature)
+    ) {
       const interval = setInterval(() => {
-        setRenderTemperature((pre) => pre + 1);
+        if (Math.round(renderTemperature) < Math.round(temperature)) {
+          setRenderTemperature((pre) => pre + 1);
+        } else {
+          setRenderTemperature((pre) => pre - 1);
+        }
       }, 5);
       return () => clearInterval(interval);
     }
   }, [renderTemperature, temperature]);
 
   useEffect(() => {
-    if (humidity != 0 && renderHumidity < humidity) {
+    if (humidity != 0 && Math.round(renderHumidity) != Math.round(humidity)) {
       const interval = setInterval(() => {
-        setRenderHumidity((pre) => pre + 1);
+        if (Math.round(renderHumidity) < Math.round(humidity)) {
+          setRenderHumidity((pre) => pre + 1);
+        } else {
+          setRenderHumidity((pre) => pre - 1);
+        }
       }, 5);
       return () => clearInterval(interval);
     }
   }, [renderHumidity, humidity]);
 
   useEffect(() => {
-    if (soildMoisture != 0 && renderSoildMoisture < soildMoisture) {
+    if (
+      soildMoisture != 0 &&
+      Math.round(renderSoildMoisture) != Math.round(soildMoisture)
+    ) {
       const interval = setInterval(() => {
-        setRenderSoildMoisture((preTem) => preTem + 1);
+        if (Math.round(renderSoildMoisture) < Math.round(soildMoisture)) {
+          setRenderSoildMoisture((pre) => pre + 1);
+        } else {
+          setRenderSoildMoisture((pre) => pre - 1);
+        }
       }, 5);
       return () => clearInterval(interval);
     }
@@ -79,14 +97,17 @@ const Dashboard = () => {
 
       socket.on("temperatureUpdate", ({ temperature }) => {
         setTemperature(temperature);
+        console.log("Temperature: ", temperature);
       });
 
       socket.on("humidityUpdate", ({ humidity }) => {
         setHumidity(humidity);
+        console.log("Humidity: ", humidity);
       });
 
       socket.on("soildMoistureUpdate", ({ soildMoisture }) => {
         setSoildMoisture(soildMoisture);
+        console.log("Soild Moisture: ", soildMoisture);
       });
     }
   }, []);
@@ -94,7 +115,12 @@ const Dashboard = () => {
   return (
     <Box m="20px">
       {/* HEADER */}
-      <Box display="flex" flexDirection={isMobile && 'column'} justifyContent="space-between" alignItems="center">
+      <Box
+        display="flex"
+        flexDirection={isMobile && "column"}
+        justifyContent="space-between"
+        alignItems="center"
+      >
         <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
 
         <Box>
@@ -105,10 +131,10 @@ const Dashboard = () => {
               fontSize: "14px",
               fontWeight: "bold",
               padding: "10px 20px",
-              mb: "20px" 
+              mb: "20px",
             }}
           >
-            <DownloadOutlinedIcon sx={{ mr: "10px"}} />
+            <DownloadOutlinedIcon sx={{ mr: "10px" }} />
             Download Reports
           </Button>
         </Box>
@@ -116,8 +142,8 @@ const Dashboard = () => {
 
       {/* GRID & CHARTS */}
       <Box
-        display={isMobile ? 'flex' : 'grid'}
-        flexDirection={isMobile ? 'column' : 'none'}
+        display={isMobile ? "flex" : "grid"}
+        flexDirection={isMobile ? "column" : "none"}
         gridTemplateColumns="repeat(12, 1fr)"
         gridAutoRows="140px"
         gap="20px"
