@@ -12,6 +12,9 @@ router.get("/lastlight", verifyToken, dataController.lastLight);
 router.get("/lastmode", verifyToken, dataController.lastMode);
 router.get("/lastpump", verifyToken, dataController.lastPump);
 router.get("/notifications", verifyToken, dataController.getNotifications);
+router.get("/temperatures", verifyToken, dataController.getTemperatures);
+router.get("/humidities", verifyToken, dataController.getHumidities);
+router.get("/soildmoistures", verifyToken, dataController.getSoildMoistures);
 
 router.post("/setfan", verifyToken, dataController.setFan);
 router.post("/setmode", verifyToken, dataController.setMode);
