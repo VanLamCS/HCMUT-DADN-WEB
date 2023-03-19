@@ -27,7 +27,7 @@ export const register = async (req, res, next) => {
 };
 
 export const login = async (req, res, next) => {
-    console.log("check login: ", req.body)
+    console.log("check login: ", req.body);
     const { email, password } = req.body;
     if (!email || !password) {
         res.status(400);
@@ -43,7 +43,7 @@ export const login = async (req, res, next) => {
             token: genToken(user._id),
         });
     } else {
-        res.status(401);
+        res.status(400);
         next(new Error("Invalid email or password"));
     }
 };
