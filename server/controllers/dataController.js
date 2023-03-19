@@ -1,4 +1,5 @@
 import axios from "axios";
+import Notification from "../models/notificationModel.js";
 
 export const lastTemperature = (req, res, next) => {
     axios
@@ -291,4 +292,14 @@ export const setPump = async (req, res, next) => {
             next(new Error("Value is invalid"));
         }
     }
+};
+
+export const getNotifications = (req, res, next) => {
+    let limit = req.query["limit"] ? req.query["limit"] : 24;
+    const data = Notification.find({}, "feed content createdAt")
+        .sort({ createdAt: "desc" })
+        .limit(limit)
+        .then((data) => {
+            res.status(200).json({ data });
+        });
 };

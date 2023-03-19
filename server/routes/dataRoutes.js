@@ -11,6 +11,7 @@ router.get("/lastfan", verifyToken, dataController.lastFan);
 router.get("/lastlight", verifyToken, dataController.lastLight);
 router.get("/lastmode", verifyToken, dataController.lastMode);
 router.get("/lastpump", verifyToken, dataController.lastPump);
+router.get("/notifications", verifyToken, dataController.getNotifications);
 
 router.post("/setfan", verifyToken, dataController.setFan);
 router.post("/setmode", verifyToken, dataController.setMode);

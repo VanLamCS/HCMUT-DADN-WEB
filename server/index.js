@@ -8,6 +8,7 @@ import http from "http";
 import route from "./routes/index.js";
 import { notFound, errorHandler } from "./middlewares/errorMiddleware.js";
 import realtimeUpdate from "./adafruit/realtimeUpdate.js";
+import listenEvents from "./processes/notificationProcesses.js";
 
 dotenv.config();
 connectDB();
@@ -30,6 +31,7 @@ const io = new Server(server, {
     },
 });
 realtimeUpdate(io);
+listenEvents(io);
 io.listen(8000);
 
 route(app);
