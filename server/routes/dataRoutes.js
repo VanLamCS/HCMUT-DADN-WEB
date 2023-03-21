@@ -15,6 +15,13 @@ router.get("/notifications", verifyToken, dataController.getNotifications);
 router.get("/temperatures", verifyToken, dataController.getTemperatures);
 router.get("/humidities", verifyToken, dataController.getHumidities);
 router.get("/soildmoistures", verifyToken, dataController.getSoildMoistures);
+router.get("/daytemperatures", verifyToken, dataController.getDayTemperatures);
+router.get("/dayhumidities", verifyToken, dataController.getDayHumidities);
+router.get(
+    "/daysoildmoistures",
+    verifyToken,
+    dataController.getDaySoildMoistures
+);
 
 router.post("/setfan", verifyToken, dataController.setFan);
 router.post("/setmode", verifyToken, dataController.setMode);
