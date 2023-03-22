@@ -17,3 +17,4 @@
 /server/.env.development.local
 /server/.env.test.local
 /server/.env.production.local
+/server/.env
