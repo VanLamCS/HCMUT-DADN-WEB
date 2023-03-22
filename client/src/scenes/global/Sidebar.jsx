@@ -18,7 +18,6 @@ import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import { useMediaQuery } from "@mui/material";
-import { useSelector } from "react-redux";
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -45,7 +44,9 @@ const Sidebar = ({ openMobile, setOpenMobile }) => {
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
-  const userInfo = useSelector((state) => state.userInfo);
+  const [name, setName] = useState(localStorage.getItem('name'))
+  const [email, setEmail] = useState(localStorage.getItem('email'))
+
 
   useEffect(() => {
     setOpenMobile(false);
@@ -119,10 +120,10 @@ const Sidebar = ({ openMobile, setOpenMobile }) => {
                   fontWeight="bold"
                   sx={{ m: "10px 0 0 0" }}
                 >
-                  {userInfo.name}
+                  {name}
                 </Typography>
                 <Typography variant="h5" color={colors.greenAccent[500]}>
-                  {userInfo.email}
+                  {email}
                 </Typography>
               </Box>
             </Box>

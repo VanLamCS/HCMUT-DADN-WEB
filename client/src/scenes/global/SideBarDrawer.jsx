@@ -17,6 +17,7 @@ import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import { useMediaQuery } from "@mui/material";
+import DashboardIcon from "@mui/icons-material/Dashboard";
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -67,10 +68,10 @@ const SidebarDrawer = ({ openMobile, setOpenMobile }) => {
         "& .pro-menu-item.active": {
           color: "#6870fa !important",
         },
-        height: '100vh'
+        height: "100vh",
       }}
     >
-      <ProSidebar collapsed={ isCollapsed || isTablet}>
+      <ProSidebar collapsed={isCollapsed || isTablet}>
         <Menu iconShape="square">
           {/* LOGO AND MENU ICON */}
           <MenuItem
@@ -79,10 +80,10 @@ const SidebarDrawer = ({ openMobile, setOpenMobile }) => {
             style={{
               margin: "10px 0 20px 0",
               color: colors.grey[100],
-              display: (isMobile || isTablet) && 'none'
+              display: (isMobile || isTablet) && "none",
             }}
           >
-            {(!isCollapsed) && (
+            {!isCollapsed && (
               <Box
                 display="flex"
                 justifyContent="space-between"
@@ -99,8 +100,8 @@ const SidebarDrawer = ({ openMobile, setOpenMobile }) => {
             )}
           </MenuItem>
 
-          {(!isCollapsed) && (
-            <Box mb="25px" sx={{ display: isTablet && 'none'}}>
+          {!isCollapsed && (
+            <Box mb="25px" sx={{ display: isTablet && "none" }}>
               <Box display="flex" justifyContent="center" alignItems="center">
                 <img
                   alt="profile-user"
@@ -110,85 +111,22 @@ const SidebarDrawer = ({ openMobile, setOpenMobile }) => {
                   style={{ cursor: "pointer", borderRadius: "50%" }}
                 />
               </Box>
-              <Box textAlign="center">
-                <Typography
-                  variant="h2"
-                  color={colors.grey[100]}
-                  fontWeight="bold"
-                  sx={{ m: "10px 0 0 0" }}
-                >
-                  Ed Roh
-                </Typography>
-                <Typography variant="h5" color={colors.greenAccent[500]}>
-                  VP Fancy Admin
-                </Typography>
-              </Box>
             </Box>
           )}
 
           <Box paddingLeft={isCollapsed || isTablet ? undefined : "10%"}>
             <Item
-              title="Dashboard"
+              title="Home"
               to="/"
               icon={<HomeOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
 
-            <Typography
-              variant="h6"
-              color={colors.grey[300]}
-              sx={{ m: "15px 0 5px 20px" }}
-            >
-              Data
-            </Typography>
             <Item
-              title="Manage Team"
-              to="/team"
-              icon={<PeopleOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Contacts Information"
-              to="/contacts"
-              icon={<ContactsOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Invoices Balances"
-              to="/invoices"
-              icon={<ReceiptOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-
-            <Typography
-              variant="h6"
-              color={colors.grey[300]}
-              sx={{ m: "15px 0 5px 20px" }}
-            >
-              Pages
-            </Typography>
-            <Item
-              title="Profile Form"
-              to="/form"
-              icon={<PersonOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Calendar"
-              to="/calendar"
-              icon={<CalendarTodayOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="FAQ Page"
-              to="/faq"
-              icon={<HelpOutlineOutlinedIcon />}
+              title="Dashboard"
+              to="/dashboard"
+              icon={<DashboardIcon />}
               selected={selected}
               setSelected={setSelected}
             />
@@ -201,29 +139,22 @@ const SidebarDrawer = ({ openMobile, setOpenMobile }) => {
               Charts
             </Typography>
             <Item
-              title="Bar Chart"
-              to="/bar"
-              icon={<BarChartOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Pie Chart"
-              to="/pie"
+              title="Moisures Chart"
+              to="/line-moisures"
               icon={<PieChartOutlineOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
-              title="Line Chart"
-              to="/line"
+              title="Temperatures Chart"
+              to="/line-temperatures"
               icon={<TimelineOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
-              title="Geography Chart"
-              to="/geography"
+              title="Humidities Chart"
+              to="/line-humidities"
               icon={<MapOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}

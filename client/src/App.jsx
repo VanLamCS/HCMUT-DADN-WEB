@@ -40,7 +40,7 @@ function App() {
             <>
               <Sidebar openMobile={openMobile} setOpenMobile={setOpenMobile} />
               <main className="content">
-                <Topbar openMobile={openMobile} setOpenMobile={setOpenMobile} />
+                <Topbar reload={reload} setReload={setReload} openMobile={openMobile} setOpenMobile={setOpenMobile} />
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="/dashboard" element={<DashBoard />} />
