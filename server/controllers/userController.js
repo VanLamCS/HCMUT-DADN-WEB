@@ -5,12 +5,12 @@ export const register = async (req, res, next) => {
     const { email, password, name } = req.body;
     if (!email || !password || !name) {
         res.status(400);
-        next(new Error("All fields must be fill"));
+        return next(new Error("All fields must be fill"));
     }
     const userExist = await User.findOne({ email });
     if (userExist) {
         res.status(400);
-        next(new Error("Email has already used!"));
+        return next(new Error("Email has already used!"));
     }
     const user = new User({ name, email, password });
     user.save()
@@ -31,7 +31,7 @@ export const login = async (req, res, next) => {
     const { email, password } = req.body;
     if (!email || !password) {
         res.status(400);
-        next(new Error("All fields must be filled"));
+        return next(new Error("All fields must be filled"));
     }
     const user = await User.findOne({ email });
     if (user && (await user.matchPassword(password))) {
@@ -44,6 +44,6 @@ export const login = async (req, res, next) => {
         });
     } else {
         res.status(400);
-        next(new Error("Invalid email or password"));
+        return next(new Error("Invalid email or password"));
     }
 };

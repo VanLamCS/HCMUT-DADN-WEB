@@ -20,7 +20,7 @@ export const lastTemperature = (req, res, next) => {
         })
         .catch((error) => {
             res.status(400);
-            next(new Error(error.message));
+            return next(new Error(error.message));
         });
 };
 
@@ -43,7 +43,7 @@ export const lastHumidity = (req, res, next) => {
         })
         .catch((error) => {
             res.status(400);
-            next(new Error(error.message));
+            return next(new Error(error.message));
         });
 };
 
@@ -89,7 +89,7 @@ export const lastFan = (req, res, next) => {
         })
         .catch((error) => {
             res.status(400);
-            next(new Error(error.message));
+            return next(new Error(error.message));
         });
 };
 
@@ -112,7 +112,7 @@ export const lastLight = (req, res, next) => {
         })
         .catch((error) => {
             res.status(400);
-            next(new Error(error.message));
+            return next(new Error(error.message));
         });
 };
 
@@ -135,7 +135,7 @@ export const lastMode = (req, res, next) => {
         })
         .catch((error) => {
             res.status(400);
-            next(new Error(error.message));
+            return next(new Error(error.message));
         });
 };
 
@@ -158,7 +158,7 @@ export const lastPump = (req, res, next) => {
         })
         .catch((error) => {
             res.status(400);
-            next(new Error(error.message));
+            return next(new Error(error.message));
         });
 };
 
@@ -166,7 +166,7 @@ export const setFan = async (req, res, next) => {
     const { value } = req.body;
     if (!value) {
         res.status(400);
-        next(new Error("Value is not sent!"));
+        return next(new Error("Value is not sent!"));
     } else {
         let temperature = parseFloat(value);
         if (temperature >= 0 && temperature <= 1) {
@@ -186,11 +186,11 @@ export const setFan = async (req, res, next) => {
                 res.status(201).json({ ...data, message: "successful" });
             } else {
                 res.status(400);
-                next(new Error("Set value failed"));
+                return next(new Error("Set value failed"));
             }
         } else {
             res.status(400);
-            next(new Error("Value is invalid"));
+            return next(new Error("Value is invalid"));
         }
     }
 };
@@ -199,7 +199,7 @@ export const setMode = async (req, res, next) => {
     const { value } = req.body;
     if (!value) {
         res.status(400);
-        next(new Error("Value is not sent!"));
+        return next(new Error("Value is not sent!"));
     } else {
         let temperature = parseFloat(value);
         if (temperature == 0 || temperature == 1) {
@@ -219,11 +219,11 @@ export const setMode = async (req, res, next) => {
                 res.status(201).json({ ...data, message: "successful" });
             } else {
                 res.status(400);
-                next(new Error("Set value failed"));
+                return next(new Error("Set value failed"));
             }
         } else {
             res.status(400);
-            next(new Error("Value is invalid"));
+            return next(new Error("Value is invalid"));
         }
     }
 };
@@ -232,7 +232,7 @@ export const setLight = async (req, res, next) => {
     const { value } = req.body;
     if (!value) {
         res.status(400);
-        next(new Error("Value is not sent!"));
+        return next(new Error("Value is not sent!"));
     } else {
         let temperature = parseFloat(value);
         if (temperature == 0 || temperature == 1) {
@@ -252,11 +252,11 @@ export const setLight = async (req, res, next) => {
                 res.status(201).json({ ...data, message: "successful" });
             } else {
                 res.status(400);
-                next(new Error("Set value failed"));
+                return next(new Error("Set value failed"));
             }
         } else {
             res.status(400);
-            next(new Error("Value is invalid"));
+            return next(new Error("Value is invalid"));
         }
     }
 };
@@ -265,7 +265,7 @@ export const setPump = async (req, res, next) => {
     const { value } = req.body;
     if (!value) {
         res.status(400);
-        next(new Error("Value is not sent!"));
+        return next(new Error("Value is not sent!"));
     } else {
         let temperature = parseFloat(value);
         if (temperature == 0 || temperature == 1) {
@@ -285,11 +285,11 @@ export const setPump = async (req, res, next) => {
                 res.status(201).json({ ...data, message: "successful" });
             } else {
                 res.status(400);
-                next(new Error("Set value failed"));
+                return next(new Error("Set value failed"));
             }
         } else {
             res.status(400);
-            next(new Error("Value is invalid"));
+            return next(new Error("Value is invalid"));
         }
     }
 };
@@ -340,7 +340,7 @@ export const getTemperatures = async (req, res, next) => {
         })
         .catch((error) => {
             res.status(400);
-            next(new Error(error.message));
+            return next(new Error(error.message));
         });
 };
 
@@ -377,7 +377,7 @@ export const getHumidities = async (req, res, next) => {
         })
         .catch((error) => {
             res.status(400);
-            next(new Error(error.message));
+            return next(new Error(error.message));
         });
 };
 
@@ -414,7 +414,7 @@ export const getSoildMoistures = async (req, res, next) => {
         })
         .catch((error) => {
             res.status(400);
-            next(new Error(error.message));
+            return next(new Error(error.message));
         });
 };
 
@@ -502,7 +502,7 @@ export const getDayTemperatures = async (req, res, next) => {
         })
         .catch((error) => {
             res.status(400);
-            next(new Error(error.message));
+            return next(new Error(error.message));
         });
 };
 
@@ -560,7 +560,7 @@ export const getDayHumidities = async (req, res, next) => {
         })
         .catch((error) => {
             res.status(400);
-            next(new Error(error.message));
+            return next(new Error(error.message));
         });
 };
 
@@ -618,6 +618,6 @@ export const getDaySoildMoistures = async (req, res, next) => {
         })
         .catch((error) => {
             res.status(400);
-            next(new Error(error.message));
+            return next(new Error(error.message));
         });
 };
