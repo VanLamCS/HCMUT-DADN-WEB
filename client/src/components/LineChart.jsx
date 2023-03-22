@@ -1,15 +1,87 @@
 import { ResponsiveLine } from "@nivo/line";
 import { useTheme } from "@mui/material";
 import { tokens } from "../theme";
-import { mockLineData as data } from "../data/mockData";
+import { useEffect, useState } from "react";
+import {
+  get24SolidHumidities,
+  get24SolidMoistures,
+  get24SolidTemperatures,
+} from "../api";
 
-const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
+const LineChart = ({
+  whatRender = "All",
+}) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const [test, setTest] = useState([]);
+
+  const fetchData = async () => {
+    const resMoisures = await get24SolidMoistures();
+    const resHumidities = await get24SolidHumidities();
+    const resTemperatures = await get24SolidTemperatures();
+
+    const tempMoisures = resMoisures.data.data;
+    const tempHumidities = resHumidities.data.data;
+    const tempTemperatures = resTemperatures.data.data;
+
+    tempMoisures.forEach((obj) => {
+      obj.x = obj.hour;
+      delete obj.hour;
+      obj.y = obj.value;
+      delete obj.value;
+    });
+
+    tempHumidities.forEach((obj) => {
+      obj.x = obj.hour;
+      delete obj.hour;
+      obj.y = obj.value;
+      delete obj.value;
+    });
+
+    tempTemperatures.forEach((obj) => {
+      obj.x = obj.hour;
+      delete obj.hour;
+      obj.y = obj.value;
+      delete obj.value;
+    });
+
+    const dataChartMoisures = {
+      id: "Moisures",
+      data: tempMoisures,
+    };
+
+    const dataChartHumidities = {
+      id: "Humidities",
+      data: tempHumidities,
+    };
+
+    const dataChartTemperatures = {
+      id: "Temperatures",
+      data: tempTemperatures,
+    };
+
+    const myArray = [];
+    if (whatRender === "All") {
+      myArray.push(dataChartMoisures);
+      myArray.push(dataChartHumidities);
+      myArray.push(dataChartTemperatures);
+    } else if (whatRender === "Moisures") {
+      myArray.push(dataChartMoisures);
+    } else if (whatRender === "Temperatures") {
+      myArray.push(dataChartTemperatures);
+    } else if (whatRender === "Humidities") {
+      myArray.push(dataChartHumidities);
+    }
+    setTest(myArray);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [whatRender]);
 
   return (
     <ResponsiveLine
-      data={data}
+      data={test}
       theme={{
         axis: {
           domain: {
@@ -43,7 +115,7 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
           },
         },
       }}
-      colors={isDashboard ? { datum: "color" } : { scheme: "nivo" }} // added
+      colors={{ scheme: "nivo" }} // added
       margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
       xScale={{ type: "point" }}
       yScale={{
@@ -62,7 +134,7 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
         tickSize: 0,
         tickPadding: 5,
         tickRotation: 0,
-        legend: isDashboard ? undefined : "transportation", // added
+        legend: "hour", // added
         legendOffset: 36,
         legendPosition: "middle",
       }}
@@ -72,7 +144,7 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
         tickSize: 3,
         tickPadding: 5,
         tickRotation: 0,
-        legend: isDashboard ? undefined : "count", // added
+        legend: "value", // added
         legendOffset: -40,
         legendPosition: "middle",
       }}

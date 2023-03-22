@@ -20,7 +20,7 @@ const Topbar = ({ openMobile, setOpenMobile }) => {
   const isMobile = useMediaQuery('(max-width: 600px)');
 
   return (
-    <Box display="flex" justifyContent="space-between" p={2}>
+    <Box display="flex" flexDirection='row-reverse' justifyContent="space-between" p={2}>
       {/* SEARCH BAR */}
       {isMobile && (
         <IconButton
@@ -33,7 +33,7 @@ const Topbar = ({ openMobile, setOpenMobile }) => {
         </IconButton>
       )}
       <Box
-        display="flex"
+        display="none"
         backgroundColor={colors.primary[400]}
         borderRadius="3px"
       >

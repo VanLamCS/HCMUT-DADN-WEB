@@ -3,16 +3,21 @@ import styles from "./style.module.css";
 import { loginUser } from "../../api";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { setUserInfo } from "../../features/user";
 
 const Login = ({ reload, setReload }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const form = { email, password };
     const { data } = await loginUser(form);
+    const name= data?.name
+    dispatch(setUserInfo({ email, name}));
     if (data) {
       toast.success("Login successfully!!!");
       localStorage.setItem("user", JSON.stringify(data));
