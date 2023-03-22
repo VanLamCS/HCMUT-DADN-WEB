@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import Topbar from "./scenes/global/Topbar";
 import Sidebar from "./scenes/global/Sidebar";
-import Dashboard from "./scenes/dashboard";
+import Home from "./scenes/home";
+import DashBoard from "./scenes/dashboard";
 import Team from "./scenes/team";
 import Invoices from "./scenes/invoices";
 import Contacts from "./scenes/contacts";
@@ -39,9 +40,10 @@ function App() {
             <>
               <Sidebar openMobile={openMobile} setOpenMobile={setOpenMobile} />
               <main className="content">
-                <Topbar openMobile={openMobile} setOpenMobile={setOpenMobile} />
+                <Topbar reload={reload} setReload={setReload} openMobile={openMobile} setOpenMobile={setOpenMobile} />
                 <Routes>
-                  <Route path="/" element={<Dashboard />} />
+                  <Route path="/" element={<Home />} />
+                  <Route path="/dashboard" element={<DashBoard />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/team" element={<Team />} />
                   <Route path="/contacts" element={<Contacts />} />
@@ -49,7 +51,9 @@ function App() {
                   <Route path="/form" element={<Form />} />
                   <Route path="/bar" element={<Bar />} />
                   <Route path="/pie" element={<Pie />} />
-                  <Route path="/line" element={<Line />} />
+                  <Route path="/line-humidities" element={<Line whatRender="Humidities" />} />
+                  <Route path="/line-temperatures" element={<Line whatRender="Temperatures" />} />
+                  <Route path="/line-moisures" element={<Line whatRender="Moisures" />} />
                   <Route path="/faq" element={<FAQ />} />
                   <Route path="/calendar" element={<Calendar />} />
                   <Route path="/geography" element={<Geography />} />

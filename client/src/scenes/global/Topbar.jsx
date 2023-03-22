@@ -1,26 +1,68 @@
 import { Box, IconButton, useTheme } from "@mui/material";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { ColorModeContext, tokens } from "../../theme";
-import InputBase from "@mui/material/InputBase";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
-import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
-import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
-import SearchIcon from "@mui/icons-material/Search";
-import { Drawer, useMediaQuery } from "@mui/material";
+import { Drawer, useMediaQuery, Typography, Popover } from "@mui/material";
 import { Menu } from "@mui/icons-material";
-import Sidebar from "./Sidebar";
 import SidebarDrawer from "./SideBarDrawer";
+import * as React from "react";
+import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
 
-const Topbar = ({ openMobile, setOpenMobile }) => {
+const Topbar = ({ openMobile, setOpenMobile, reload, setReload }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
-  const isMobile = useMediaQuery('(max-width: 600px)');
+  const isMobile = useMediaQuery("(max-width: 600px)");
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [name, setName] = useState(localStorage.getItem("name"));
+  const [email, setEmail] = useState(localStorage.getItem("email"));
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    localStorage.clear();
+    setReload(!reload);
+    toast.success("Logut successfully");
+  };
+
+  const open = Boolean(anchorEl);
+
+  const popoverContent = (
+    <Box p={2}>
+      <Typography variant="subtitle1">{name}</Typography>
+      <Typography variant="body2" color="text.secondary">
+        {email}
+      </Typography>
+      <Box mt={2}>
+        <Box display="flex" justifyContent="center">
+          <IconButton
+            variant="contained"
+            color="secondary"
+            onClick={handleClose}
+          >
+            <Typography onClick={handleLogout}>Logout</Typography>
+          </IconButton>
+        </Box>
+      </Box>
+    </Box>
+  );
 
   return (
-    <Box display="flex" justifyContent="space-between" p={2}>
+    <Box
+      display="flex"
+      flexDirection="row-reverse"
+      justifyContent="space-between"
+      p={2}
+    >
       {/* SEARCH BAR */}
       {isMobile && (
         <IconButton
@@ -32,16 +74,6 @@ const Topbar = ({ openMobile, setOpenMobile }) => {
           <Menu />
         </IconButton>
       )}
-      <Box
-        display="flex"
-        backgroundColor={colors.primary[400]}
-        borderRadius="3px"
-      >
-        <InputBase sx={{ ml: 2, flex: 1 }} placeholder="Search" />
-        <IconButton type="button" sx={{ p: 1 }}>
-          <SearchIcon />
-        </IconButton>
-      </Box>
       {/* ICONS */}
       <Box display="flex">
         <IconButton onClick={colorMode.toggleColorMode}>
@@ -51,16 +83,27 @@ const Topbar = ({ openMobile, setOpenMobile }) => {
             <LightModeOutlinedIcon />
           )}
         </IconButton>
-        <IconButton>
-          <NotificationsOutlinedIcon />
-        </IconButton>
-        <IconButton>
-          <SettingsOutlinedIcon />
-        </IconButton>
-        <IconButton>
+
+        <IconButton onClick={handleClick}>
           <PersonOutlinedIcon />
         </IconButton>
       </Box>
+
+      <Popover
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "center",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+      >
+        {popoverContent}
+      </Popover>
 
       <Drawer
         variant="temporary"
