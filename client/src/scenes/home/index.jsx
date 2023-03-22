@@ -15,7 +15,7 @@ import { useState, useEffect } from "react";
 import { io } from "socket.io-client";
 import { getHumidity, getSoildMoisture, getTemperature } from "../../api";
 import { useNavigate } from "react-router-dom";
-const socket = io("http://localhost:5000"); // Replace with your server's URL
+const socket = io("http://localhost:8000"); // Replace with your server's URL
 
 const Home = () => {
   const theme = useTheme();
