@@ -32,7 +32,7 @@ const io = new Server(server, {
 });
 realtimeUpdate(io);
 listenEvents(io);
-io.listen(8000);
+io.listen(process.env.SOCKET_PORT);
 
 route(app);
 app.use(notFound);
