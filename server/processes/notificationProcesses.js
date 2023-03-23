@@ -48,45 +48,45 @@ const listenEvents = (io) => {
 
         } else  */ if (topic.endsWith("fan")) {
             if (data == 0) {
-                mess = "Fan is turned off";
+                mess = "Fan was turned off";
             } else if (data == 1) {
-                mess = "Fan is turned on";
+                mess = "Fan was turned on";
             } /*  else if (data == 2) {
-                mess = "Fan is turned on medium";
+                mess = "Fan was turned on medium";
             } else if (data == 3) {
-                mess = "Fan is turned on high";
+                mess = "Fan was turned on high";
             } */ else {
-                mess = "Fan status is adjusted";
+                mess = "Fan status was adjusted";
             }
             saveNotiOnDb("fan", mess, createAt);
             io.emit("newNotification", { message: mess, createdAt: createAt });
         } else if (topic.endsWith("mode")) {
             if (data == 0) {
-                mess = "Mode is set to manual";
+                mess = "Mode was set to manual";
             } else if (data == 1) {
-                mess = "Mode is set to auto";
+                mess = "Mode was set to auto";
             } else {
-                mess = "Mode is adjusted";
+                mess = "Mode was adjusted";
             }
             saveNotiOnDb("mode", mess, createAt);
             io.emit("newNotification", { message: mess, createdAt: createAt });
         } else if (topic.endsWith("pump")) {
             if (data == 0) {
-                mess = "Pump is turned off";
+                mess = "Pump was turned off";
             } else if (data == 1) {
-                mess = "Pump is turned on";
+                mess = "Pump was turned on";
             } else {
-                mess = "Pump is adjusted";
+                mess = "Pump was adjusted";
             }
             saveNotiOnDb("pump", mess, createAt);
             io.emit("newNotification", { message: mess, createdAt: createAt });
         } else if (topic.endsWith("light")) {
             if (data == 0) {
-                mess = "Light is turned off";
+                mess = "Light was turned off";
             } else if (data == 1) {
-                mess = "Light is turned on";
+                mess = "Light was turned on";
             } else {
-                mess = "Light is adjusted";
+                mess = "Light was adjusted";
             }
             saveNotiOnDb("light", mess, createAt);
             io.emit("newNotification", { message: mess, createdAt: createAt });
