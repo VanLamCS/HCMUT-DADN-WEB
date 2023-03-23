@@ -1,7 +1,8 @@
 import axios from "axios";
 import Notification from "../models/notificationModel.js";
+import { publishData } from "../utils/mqttHelper.js";
 
-export const lastTemperature = (req, res, next) => {
+export const lastTemperature = async (req, res, next) => {
     axios
         .get(
             `https://io.adafruit.com/api/v2/${process.env.ADAFRUIT_USERNAME}/feeds/temperature/data/last`,
@@ -24,7 +25,7 @@ export const lastTemperature = (req, res, next) => {
         });
 };
 
-export const lastHumidity = (req, res, next) => {
+export const lastHumidity = async (req, res, next) => {
     axios
         .get(
             `https://io.adafruit.com/api/v2/${process.env.ADAFRUIT_USERNAME}/feeds/humidity/data/last`,
@@ -47,7 +48,7 @@ export const lastHumidity = (req, res, next) => {
         });
 };
 
-export const lastSoildMoisture = (req, res, next) => {
+export const lastSoildMoisture = async (req, res, next) => {
     axios
         .get(
             `https://io.adafruit.com/api/v2/${process.env.ADAFRUIT_USERNAME}/feeds/soild-moisture/data/last`,
@@ -70,7 +71,7 @@ export const lastSoildMoisture = (req, res, next) => {
         });
 };
 
-export const lastFan = (req, res, next) => {
+export const lastFan = async (req, res, next) => {
     axios
         .get(
             `https://io.adafruit.com/api/v2/${process.env.ADAFRUIT_USERNAME}/feeds/fan/data/last`,
@@ -93,7 +94,7 @@ export const lastFan = (req, res, next) => {
         });
 };
 
-export const lastLight = (req, res, next) => {
+export const lastLight = async (req, res, next) => {
     axios
         .get(
             `https://io.adafruit.com/api/v2/${process.env.ADAFRUIT_USERNAME}/feeds/light/data/last`,
@@ -116,7 +117,7 @@ export const lastLight = (req, res, next) => {
         });
 };
 
-export const lastMode = (req, res, next) => {
+export const lastMode = async (req, res, next) => {
     axios
         .get(
             `https://io.adafruit.com/api/v2/${process.env.ADAFRUIT_USERNAME}/feeds/mode/data/last`,
@@ -139,7 +140,7 @@ export const lastMode = (req, res, next) => {
         });
 };
 
-export const lastPump = (req, res, next) => {
+export const lastPump = async (req, res, next) => {
     axios
         .get(
             `https://io.adafruit.com/api/v2/${process.env.ADAFRUIT_USERNAME}/feeds/pump/data/last`,
@@ -162,6 +163,17 @@ export const lastPump = (req, res, next) => {
         });
 };
 
+const handleReturn = async (result, res, next) => {
+    if (result) {
+        res.status(201).json({
+            message: "Set data successful",
+        });
+    } else {
+        res.status(400);
+        return next(new Error("Set data failed"));
+    }
+};
+
 export const setFan = async (req, res, next) => {
     const { value } = req.body;
     if (!value) {
@@ -170,24 +182,9 @@ export const setFan = async (req, res, next) => {
     } else {
         let temperature = parseFloat(value);
         if (temperature >= 0 && temperature <= 1) {
-            const { data } = await axios.post(
-                `https://io.adafruit.com/api/v2/${process.env.ADAFRUIT_USERNAME}/feeds/fan/data`,
-                {
-                    value: value,
-                },
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-AIO-Key": process.env.ADAFRUIT_KEY,
-                    },
-                }
+            publishData("fan", temperature, (result) =>
+                handleReturn(result, res, next)
             );
-            if (data) {
-                res.status(201).json({ ...data, message: "successful" });
-            } else {
-                res.status(400);
-                return next(new Error("Set value failed"));
-            }
         } else {
             res.status(400);
             return next(new Error("Value is invalid"));
@@ -201,26 +198,11 @@ export const setMode = async (req, res, next) => {
         res.status(400);
         return next(new Error("Value is not sent!"));
     } else {
-        let temperature = parseFloat(value);
-        if (temperature == 0 || temperature == 1) {
-            const { data } = await axios.post(
-                `https://io.adafruit.com/api/v2/${process.env.ADAFRUIT_USERNAME}/feeds/mode/data`,
-                {
-                    value: value,
-                },
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-AIO-Key": process.env.ADAFRUIT_KEY,
-                    },
-                }
+        let mode = parseFloat(value);
+        if (mode >= 0 && mode <= 1) {
+            publishData("mode", mode, (result) =>
+                handleReturn(result, res, next)
             );
-            if (data) {
-                res.status(201).json({ ...data, message: "successful" });
-            } else {
-                res.status(400);
-                return next(new Error("Set value failed"));
-            }
         } else {
             res.status(400);
             return next(new Error("Value is invalid"));
@@ -234,26 +216,11 @@ export const setLight = async (req, res, next) => {
         res.status(400);
         return next(new Error("Value is not sent!"));
     } else {
-        let temperature = parseFloat(value);
-        if (temperature == 0 || temperature == 1) {
-            const { data } = await axios.post(
-                `https://io.adafruit.com/api/v2/${process.env.ADAFRUIT_USERNAME}/feeds/light/data`,
-                {
-                    value: value,
-                },
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-AIO-Key": process.env.ADAFRUIT_KEY,
-                    },
-                }
+        let light = parseFloat(value);
+        if (light >= 0 && light <= 1) {
+            publishData("light", light, (result) =>
+                handleReturn(result, res, next)
             );
-            if (data) {
-                res.status(201).json({ ...data, message: "successful" });
-            } else {
-                res.status(400);
-                return next(new Error("Set value failed"));
-            }
         } else {
             res.status(400);
             return next(new Error("Value is invalid"));
@@ -267,26 +234,11 @@ export const setPump = async (req, res, next) => {
         res.status(400);
         return next(new Error("Value is not sent!"));
     } else {
-        let temperature = parseFloat(value);
-        if (temperature == 0 || temperature == 1) {
-            const { data } = await axios.post(
-                `https://io.adafruit.com/api/v2/${process.env.ADAFRUIT_USERNAME}/feeds/pump/data`,
-                {
-                    value: value,
-                },
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-AIO-Key": process.env.ADAFRUIT_KEY,
-                    },
-                }
+        let pump = parseFloat(value);
+        if (pump >= 0 && pump <= 1) {
+            publishData("pump", pump, (result) =>
+                handleReturn(result, res, next)
             );
-            if (data) {
-                res.status(201).json({ ...data, message: "successful" });
-            } else {
-                res.status(400);
-                return next(new Error("Set value failed"));
-            }
         } else {
             res.status(400);
             return next(new Error("Value is invalid"));

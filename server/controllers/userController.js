@@ -1,5 +1,5 @@
 import User from "../models/userModel.js";
-import genToken from "../config/genToken.js";
+import genToken from "../utils/genToken.js";
 
 export const register = async (req, res, next) => {
     const { email, password, name } = req.body;
