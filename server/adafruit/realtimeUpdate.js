@@ -66,11 +66,11 @@ const realtimeUpdate = (io) => {
             console.log(`Mode: ${data}`);
         } else if (topic.endsWith("pump")) {
             // Emit a "pumpUpdate" event with the new pump data
-            io.emit("pumpUpdate", { soildMoisture: data });
+            io.emit("pumpUpdate", { pump: data });
             console.log(`Pump: ${data}`);
         } else if (topic.endsWith("light")) {
             // Emit a "lightUpdate" event with the new light data
-            io.emit("lightUpdate", { soildMoisture: data });
+            io.emit("lightUpdate", { light: data });
             console.log(`Light: ${data}`);
         }
     });
