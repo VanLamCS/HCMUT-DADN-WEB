@@ -316,27 +316,44 @@ function average(data) {
         return data.reduce((a, b) => a + b, 0) / data.length;
     }
 }
-function dataCal(data) {
-    let res = [];
-    for (let i = 0; i < 24; i++) {
-        let a = [];
+function dataCal(data, today) {
+    if (data.length > 0) {
+        let result = [];
+        let latest;
+        if (today) {
+            latest = new Date(data[data.length - 1][0]);
+        } else {
+            latest = new Date(data[data.length - 1][0]);
+            latest.setHours(23);
+        }
+        let arr = new Array(24).fill([]);
         data.map((e) => {
-            let d = new Date(e[0]);
-            let h = d.getHours();
-            if (h == i) {
-                a.push(parseFloat(e[1]));
-            }
+            const d = new Date(e[0]);
+            let t = d.getHours();
+            arr[t] = [...arr[t], parseFloat(e[1])];
         });
-        res.push(a);
+        let eArr = new Array(24).fill(0);
+        arr.map((e, i) => {
+            eArr[i] = average(e);
+        });
+        for (let i = latest.getHours(), count = 23; count >= 0; count--) {
+            result[count] = { hour: i, value: eArr[i] };
+            if (i == 0) {
+                i = 23;
+            } else {
+                i--;
+            }
+        }
+        return result;
+    } else {
+        return [];
     }
-    let result = [];
-    res.map((e) => result.push(average(e)));
-    return result;
 }
 
 export const getDayTemperatures = async (req, res, next) => {
     let date = req.query["date"] ? req.query["date"] : null;
     let params;
+    let now = true;
     if (date && isIsoDate(date)) {
         let today = new Date();
         let d = new Date(date);
@@ -361,6 +378,7 @@ export const getDayTemperatures = async (req, res, next) => {
                 start_time: startDString,
                 end_time: endDString,
             };
+            now = false;
         }
     } else {
         params = {
@@ -373,12 +391,18 @@ export const getDayTemperatures = async (req, res, next) => {
         })
         .then(({ data }) => {
             let values = data["data"];
-            let avgValues = dataCal(values);
-            let result = [];
-            return res.json(values);
-            for (let i = 0; i < 24; i++) {
-                result.push({ hour: i, value: avgValues[i] });
-            }
+            let ld = new Date(values[values.length - 1][0]);
+            let newValues = values.filter((e) => {
+                const d = new Date(e[0]);
+                if (
+                    d.getHours() == ld.getHours() &&
+                    d.getDate() == ld.getDate() - 1
+                ) {
+                    return false;
+                }
+                return true;
+            });
+            let result = dataCal(newValues, now);
             res.status(200).json({ feed_key: "temperature", data: result });
         })
         .catch((error) => {
@@ -390,6 +414,7 @@ export const getDayTemperatures = async (req, res, next) => {
 export const getDayHumidities = async (req, res, next) => {
     let date = req.query["date"] ? req.query["date"] : null;
     let params;
+    let now = true;
     if (date && isIsoDate(date)) {
         let today = new Date();
         let d = new Date(date);
@@ -414,6 +439,7 @@ export const getDayHumidities = async (req, res, next) => {
                 start_time: startDString,
                 end_time: endDString,
             };
+            now = false;
         }
     } else {
         params = {
@@ -426,11 +452,18 @@ export const getDayHumidities = async (req, res, next) => {
         })
         .then(({ data }) => {
             let values = data["data"];
-            let avgValues = dataCal(values);
-            let result = [];
-            for (let i = 0; i < 24; i++) {
-                result.push({ hour: i, value: avgValues[i] });
-            }
+            let ld = new Date(values[values.length - 1][0]);
+            let newValues = values.filter((e) => {
+                const d = new Date(e[0]);
+                if (
+                    d.getHours() == ld.getHours() &&
+                    d.getDate() == ld.getDate() - 1
+                ) {
+                    return false;
+                }
+                return true;
+            });
+            let result = dataCal(newValues, now);
             res.status(200).json({ feed_key: "humidity", data: result });
         })
         .catch((error) => {
@@ -442,6 +475,7 @@ export const getDayHumidities = async (req, res, next) => {
 export const getDaySoildMoistures = async (req, res, next) => {
     let date = req.query["date"] ? req.query["date"] : null;
     let params;
+    let now = true;
     if (date && isIsoDate(date)) {
         let today = new Date();
         let d = new Date(date);
@@ -466,6 +500,7 @@ export const getDaySoildMoistures = async (req, res, next) => {
                 start_time: startDString,
                 end_time: endDString,
             };
+            now = false;
         }
     } else {
         params = {
@@ -478,11 +513,18 @@ export const getDaySoildMoistures = async (req, res, next) => {
         })
         .then(({ data }) => {
             let values = data["data"];
-            let avgValues = dataCal(values);
-            let result = [];
-            for (let i = 0; i < 24; i++) {
-                result.push({ hour: i, value: avgValues[i] });
-            }
+            let ld = new Date(values[values.length - 1][0]);
+            let newValues = values.filter((e) => {
+                const d = new Date(e[0]);
+                if (
+                    d.getHours() == ld.getHours() &&
+                    d.getDate() == ld.getDate() - 1
+                ) {
+                    return false;
+                }
+                return true;
+            });
+            let result = dataCal(newValues, now);
             res.status(200).json({ feed_key: "soild-moisture", data: result });
         })
         .catch((error) => {
