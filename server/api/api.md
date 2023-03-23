@@ -30,7 +30,7 @@
 
 -   [ Set Light Data API ](#set-light-data-api)
 
-And some socket message below:
+And some socket messages below:
 
 -   `temperatureUpdate`,
 -   `humidityUpdate`,
@@ -780,26 +780,16 @@ This endpoint is used to set fan status.
 
 #### Response Body
 
-| Property   | Data type | Description                                |
-| ---------- | --------- | ------------------------------------------ |
-| \_id       | string    | -                                          |
-| value      | string    | "0" or "1"                                 |
-| feed_key   | string    | `fan`.                                     |
-| created_at | string    | `ISO Date Format`. The time it was created |
+| Property | Data type | Description     |
+| -------- | --------- | --------------- |
+| message  | string    | Just a message. |
 
 #### Example
 
 ```json
 {
     HTTP/1.1 201 Created
-    "id": "0F8Q6N7QXVPSYXV7S4S30GFNZ3",
-    "value": "1",
-    "feed_id": 2447170,
-    "feed_key": "fan",
-    "created_at": "2023-03-19T17:33:18Z",
-    "created_epoch": 1679247198,
-    "expiration": "2023-04-18T17:33:18Z",
-    "message": "successful"
+    "message": "Set data successful"
 }
 ```
 
@@ -807,9 +797,11 @@ This endpoint is used to set fan status.
 
 #### HTTP Status Code
 
-| Status Code | Description                |
-| ----------- | -------------------------- |
-| 400         | Bad Request. Login failed. |
+| Status Code | Description                                              |
+| ----------- | -------------------------------------------------------- |
+| 400         | Bad Request. `Value is not sent!` or `Value is invalid`. |
+| 401         | Unauthorized. Not logged in.                             |
+| 403         | Forbidden.                                               |
 
 #### Response Body
 
@@ -822,7 +814,7 @@ This endpoint is used to set fan status.
 ```json
 {
     HTTP/1.1 400 Bad Request
-    "message": "Invalid email or password"
+    "message": "Value is invalid"
 }
 ```
 
@@ -867,26 +859,41 @@ This endpoint is used to set mode status.
 
 #### Response Body
 
-| Property   | Data type | Description                                |
-| ---------- | --------- | ------------------------------------------ |
-| \_id       | string    | -                                          |
-| value      | string    | "0" or "1"                                 |
-| feed_key   | string    | `fan`.                                     |
-| created_at | string    | `ISO Date Format`. The time it was created |
+| Property | Data type | Description     |
+| -------- | --------- | --------------- |
+| message  | string    | Just a message. |
 
 #### Example
 
 ```json
 {
     HTTP/1.1 201 Created
-    "id": "0F8Q6N7QXVPSYXV7S4S30GFNZ3",
-    "value": "1",
-    "feed_id": 2447170,
-    "feed_key": "mode",
-    "created_at": "2023-03-19T17:33:18Z",
-    "created_epoch": 1679247198,
-    "expiration": "2023-04-18T17:33:18Z",
-    "message": "successful"
+    "message": "Set data successful"
+}
+```
+
+### Response Failed
+
+#### HTTP Status Code
+
+| Status Code | Description                                              |
+| ----------- | -------------------------------------------------------- |
+| 400         | Bad Request. `Value is not sent!` or `Value is invalid`. |
+| 401         | Unauthorized. Not logged in.                             |
+| 403         | Forbidden.                                               |
+
+#### Response Body
+
+| Property | Data type | Description    |
+| -------- | --------- | -------------- |
+| message  | string    | Error message. |
+
+#### Example
+
+```json
+{
+    HTTP/1.1 400 Bad Request
+    "message": "Value is invalid"
 }
 ```
 
@@ -931,26 +938,41 @@ This endpoint is used to set pump status.
 
 #### Response Body
 
-| Property   | Data type | Description                                |
-| ---------- | --------- | ------------------------------------------ |
-| \_id       | string    | -                                          |
-| value      | string    | "0" or "1"                                 |
-| feed_key   | string    | `fan`.                                     |
-| created_at | string    | `ISO Date Format`. The time it was created |
+| Property | Data type | Description     |
+| -------- | --------- | --------------- |
+| message  | string    | Just a message. |
 
 #### Example
 
 ```json
 {
     HTTP/1.1 201 Created
-    "id": "0F8Q6N7QXVPSYXV7S4S30GFNZ3",
-    "value": "1",
-    "feed_id": 2447170,
-    "feed_key": "pump",
-    "created_at": "2023-03-19T17:33:18Z",
-    "created_epoch": 1679247198,
-    "expiration": "2023-04-18T17:33:18Z",
-    "message": "successful"
+    "message": "Set data successful"
+}
+```
+
+### Response Failed
+
+#### HTTP Status Code
+
+| Status Code | Description                                              |
+| ----------- | -------------------------------------------------------- |
+| 400         | Bad Request. `Value is not sent!` or `Value is invalid`. |
+| 401         | Unauthorized. Not logged in.                             |
+| 403         | Forbidden.                                               |
+
+#### Response Body
+
+| Property | Data type | Description    |
+| -------- | --------- | -------------- |
+| message  | string    | Error message. |
+
+#### Example
+
+```json
+{
+    HTTP/1.1 400 Bad Request
+    "message": "Value is invalid"
 }
 ```
 
@@ -995,25 +1017,40 @@ This endpoint is used to set light status.
 
 #### Response Body
 
-| Property   | Data type | Description                                |
-| ---------- | --------- | ------------------------------------------ |
-| \_id       | string    | -                                          |
-| value      | string    | "0" or "1"                                 |
-| feed_key   | string    | `fan`.                                     |
-| created_at | string    | `ISO Date Format`. The time it was created |
+| Property | Data type | Description     |
+| -------- | --------- | --------------- |
+| message  | string    | Just a message. |
 
 #### Example
 
 ```json
 {
     HTTP/1.1 201 Created
-    "id": "0F8Q6N7QXVPSYXV7S4S30GFNZ3",
-    "value": "1",
-    "feed_id": 2447170,
-    "feed_key": "light",
-    "created_at": "2023-03-19T17:33:18Z",
-    "created_epoch": 1679247198,
-    "expiration": "2023-04-18T17:33:18Z",
-    "message": "successful"
+    "message": "Set data successful"
+}
+```
+
+### Response Failed
+
+#### HTTP Status Code
+
+| Status Code | Description                                              |
+| ----------- | -------------------------------------------------------- |
+| 400         | Bad Request. `Value is not sent!` or `Value is invalid`. |
+| 401         | Unauthorized. Not logged in.                             |
+| 403         | Forbidden.                                               |
+
+#### Response Body
+
+| Property | Data type | Description    |
+| -------- | --------- | -------------- |
+| message  | string    | Error message. |
+
+#### Example
+
+```json
+{
+    HTTP/1.1 400 Bad Request
+    "message": "Value is invalid"
 }
 ```
