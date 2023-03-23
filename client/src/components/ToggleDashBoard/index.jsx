@@ -8,9 +8,8 @@ import SanitizerIcon from "@mui/icons-material/Sanitizer";
 import ModelTrainingIcon from "@mui/icons-material/ModelTraining";
 import WbIncandescentIcon from "@mui/icons-material/WbIncandescent";
 
-const ToggleDashBoard = ({ title }) => {
+const ToggleDashBoard = ({ title, isAutoMode, setIsAutoMode }) => {
   const [toggle, setToggle] = useState("");
-  const [isAutoMode, setIsAutoMode] = useState(false)
 
   let icon = <CribIcon />;
   if (title == "Fan") {

@@ -212,7 +212,7 @@ const ToggleButton = ({
             value={isOn}
             type="checkbox"
             onChange={handleToggle}
-            disabled={toggle === "" || isAutoMode == true}
+            disabled={toggle === "" || (isAutoMode == true && title !== "Auto Mode")}
           />
           <span className={`${styles.slider} ${styles.round}`}></span>
         </label>
