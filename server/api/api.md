@@ -28,6 +28,8 @@
 
 -   [ Get Daily Soild-Moisture API ](#get-daily-soild-moisture-api)
 
+-   [ Get Notifications API ](#get-notifications-api)
+
 -   [ Set Fan Data API ](#set-fan-data-api)
 
 -   [ Set Mode Data API ](#set-mode-data-api)
@@ -944,6 +946,70 @@ This endpoint is used to get the soild-moisture in 24 hours.
         {
         "hour": 23,
         "value": 30.346153846153847
+        }
+    ]
+}
+```
+
+# Get Notifications API
+
+This endpoint is used to get the notifications.
+
+## Request
+
+`GET api/data/notifications`
+
+### Request Header
+
+| Header        | Description                               |
+| ------------- | ----------------------------------------- |
+| Authorization | Required. Set to `Bearer <access token>`. |
+
+### Parameters
+
+| Parameter | Data type | Description                                                              |
+| --------- | --------- | ------------------------------------------------------------------------ |
+| limit     | integer   | Optional. Limit number of records you will get. Default case: `limit=24` |
+
+### Example
+
+`api/data/notifications?limit=12`
+
+## Response
+
+### Successful Response
+
+#### HTTP Status Code
+
+| Status Code | Description     |
+| ----------- | --------------- |
+| 200         | OK. Successful. |
+
+#### Response Body
+
+| Property | Data type | Description                                                                  |
+| -------- | --------- | ---------------------------------------------------------------------------- |
+| message  | string    | Message :vv.                                                                 |
+| data     | array     | Array contains objects data. Each object has `_id, feed, createdAt, content` |
+
+#### Example
+
+```json
+{
+    HTTP/1.1 200 OK
+    "message": "successful",
+    "data": [
+        {
+        "_id": "641c47d2f80c4ff425248faf",
+        "feed": "pump",
+        "createdAt": "2023-03-23T12:36:34.770Z",
+        "content": "Pump is turned off"
+        },
+        {
+        "_id": "641c47c8f80c4ff425248fad",
+        "feed": "pump",
+        "createdAt": "2023-03-23T12:36:24.799Z",
+        "content": "Pump is turned off"
         }
     ]
 }
