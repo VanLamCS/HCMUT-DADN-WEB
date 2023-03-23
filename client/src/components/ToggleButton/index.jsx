@@ -47,12 +47,11 @@ const ToggleButton = ({
       }
     }
     if (title === "Pump") {
-      if(isAutoMode) {
+      if (isAutoMode) {
         setToggle("OFF");
         const postData = { value: "0" };
         await setPump(postData);
-      }
-      else {
+      } else {
         if (toggle === "OFF") {
           setToggle("ON");
           const postData = { value: "1" };
@@ -72,6 +71,7 @@ const ToggleButton = ({
         const postData = { value: "1" };
         await setMode(postData);
       } else {
+        setIsAutoMode(false);
         setToggle("OFF");
         const postData = { value: "0" };
         await setMode(postData);
@@ -88,6 +88,19 @@ const ToggleButton = ({
         const postData = { value: "0" };
         await setLight(postData);
       }
+    }
+  };
+
+  const changeAutoMode = async () => {
+    if (title === "Fan" && isAutoMode) {
+      setToggle("OFF");
+      const postData = { value: "0" };
+      await setFan(postData);
+    }
+    if (title === "Pump" && isAutoMode) {
+      setToggle("OFF");
+      const postData = { value: "0" };
+      await setPump(postData);
     }
   };
 
@@ -192,6 +205,10 @@ const ToggleButton = ({
     getInitialDevice();
   }, []);
 
+  useEffect(() => {
+    changeAutoMode();
+  }, [isAutoMode]);
+
   return (
     <>
       <Typography
@@ -212,8 +229,12 @@ const ToggleButton = ({
             value={isOn}
             type="checkbox"
             onChange={handleToggle}
-            disabled={toggle === "" || (isAutoMode == true && title !== "Auto Mode")}
-          />
+            disabled={
+              toggle === "" ||
+              (isAutoMode && title !== "Auto Mode")
+              // (isAutoMode && title !== "Led")
+            }
+            />
           <span className={`${styles.slider} ${styles.round}`}></span>
         </label>
       </div>

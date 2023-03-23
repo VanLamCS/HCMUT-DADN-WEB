@@ -10,13 +10,10 @@ import ProgressCircle from "../../components/ProgressCircle";
 import { useMediaQuery } from "@mui/material";
 import { useState, useEffect } from "react";
 import { io } from "socket.io-client";
-import {
-  getHumidity,
-  getSoildMoisture,
-  getTemperature,
-} from "../../api";
+import { getHumidity, getSoildMoisture, getTemperature } from "../../api";
 import { useNavigate } from "react-router-dom";
 import { setDataCharts } from "../../features/dataChart";
+import { useSelector } from "react-redux";
 
 const socket = io("http://localhost:8000"); // Replace with your server's URL
 
@@ -28,6 +25,28 @@ const Home = () => {
   const [soildMoisture, setSoildMoisture] = useState(0);
   const user = localStorage.getItem("user");
   const navigate = useNavigate();
+  const dataNotifications = useSelector(
+    (state) => state.dataNotifications.message
+  );
+  const [updatedData, setUpdatedData] = useState([]);
+
+  if (Object.keys(dataNotifications).length !== 0) {
+    const temp = dataNotifications.map((obj) => {
+      const dateObj = new Date(obj.createdAt);
+      const year = dateObj.getFullYear();
+      const month = ("0" + (dateObj.getMonth() + 1)).slice(-2);
+      const day = ("0" + dateObj.getDate()).slice(-2);
+      const hours = ("0" + dateObj.getHours()).slice(-2);
+      const minutes = ("0" + dateObj.getMinutes()).slice(-2);
+      const seconds = ("0" + dateObj.getSeconds()).slice(-2);
+      return {
+        ...obj,
+        createdAt: `${month}/${day}/${year} ${hours}:${minutes}:${seconds}`,
+      };
+    });
+    setUpdatedData(temp);
+    // console.log("check redux noti: ", dataNotifications);
+  }
 
   const fetchData = async () => {
     const dataTemperature = await getTemperature();
@@ -215,7 +234,7 @@ const Home = () => {
                 fontWeight="600"
                 color={colors.grey[100]}
               >
-                In 24 hours
+                Last 24 hours
               </Typography>
               <Typography
                 variant="h3"
@@ -259,7 +278,32 @@ const Home = () => {
             p="15px"
           >
             <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
-              Recent Transactions
+              Notification
+              {Object.keys(updatedData).length !== 0 &&
+                updatedData.slice(0, 5).map((notification, i) => (
+                  <Box
+                    key={notification._id}
+                    display="flex"
+                    justifyContent="space-between"
+                    alignItems="center"
+                    borderBottom={`4px solid ${colors.primary[500]}`}
+                    p="15px"
+                  >
+                    <Box>
+                      <Typography mr="15px" color={colors.grey[100]}>
+                        {notification.createdAt}
+                      </Typography>
+                    </Box>
+                    <Box color={colors.grey[100]}>{notification.date}</Box>
+                    <Box
+                      backgroundColor={colors.greenAccent[500]}
+                      p="5px 10px"
+                      borderRadius="4px"
+                    >
+                      {notification.content}
+                    </Box>
+                  </Box>
+                ))}
             </Typography>
           </Box>
         </Box>

@@ -11,9 +11,10 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./theme";
 import Calendar from "./scenes/calendar/calendar";
 import Login from "./scenes/login";
-import { get24SolidHumidities, get24SolidMoistures, get24SolidTemperatures } from "./api";
+import { get24SolidHumidities, get24SolidMoistures, get24SolidTemperatures, getNotification } from "./api";
 import { setDataCharts } from "./features/dataChart";
 import { useDispatch } from "react-redux";
+import { getDataNotification } from "./features/notification";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -27,11 +28,13 @@ function App() {
     const resMoisures = await get24SolidMoistures();
     const resHumidities = await get24SolidHumidities();
     const resTemperatures = await get24SolidTemperatures();
+    const resNotifycation = await getNotification();
+    dispatch(getDataNotification(resNotifycation.data.data))
 
     const tempMoisures = resMoisures.data.data;
     const tempHumidities = resHumidities.data.data;
     const tempTemperatures = resTemperatures.data.data;
-
+    // console.log("check moisures: ", tempTemperatures)
     tempMoisures.forEach((obj) => {
       obj.x = obj.hour;
       delete obj.hour;

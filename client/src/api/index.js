@@ -41,3 +41,5 @@ export const get24SolidMoistures = () => API.get("api/data/daysoildmoistures");
 export const get24SolidTemperatures = () => API.get("api/data/daytemperatures");
 
 export const get24SolidHumidities = () => API.get("api/data/dayhumidities");
+
+export const getNotification = () => API.get('api/data/notifications')
