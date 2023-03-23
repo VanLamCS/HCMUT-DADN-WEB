@@ -1,17 +1,11 @@
 import axios from "axios";
 import Notification from "../models/notificationModel.js";
 import { publishData } from "../utils/mqttHelper.js";
+import { adaRequest } from "../utils/axios.js";
 
 export const lastTemperature = async (req, res, next) => {
-    axios
-        .get(
-            `https://io.adafruit.com/api/v2/${process.env.ADAFRUIT_USERNAME}/feeds/temperature/data/last`,
-            {
-                headers: {
-                    "X-AIO-Key": process.env.ADAFRUIT_KEY,
-                },
-            }
-        )
+    adaRequest
+        .get("/feeds/temperature/data/last")
         .then(({ data }) => {
             res.status(200).json({
                 ...data,
@@ -26,15 +20,8 @@ export const lastTemperature = async (req, res, next) => {
 };
 
 export const lastHumidity = async (req, res, next) => {
-    axios
-        .get(
-            `https://io.adafruit.com/api/v2/${process.env.ADAFRUIT_USERNAME}/feeds/humidity/data/last`,
-            {
-                headers: {
-                    "X-AIO-Key": process.env.ADAFRUIT_KEY,
-                },
-            }
-        )
+    adaRequest
+        .get("/feeds/humidity/data/last")
         .then(({ data }) => {
             res.status(200).json({
                 ...data,
@@ -49,15 +36,8 @@ export const lastHumidity = async (req, res, next) => {
 };
 
 export const lastSoildMoisture = async (req, res, next) => {
-    axios
-        .get(
-            `https://io.adafruit.com/api/v2/${process.env.ADAFRUIT_USERNAME}/feeds/soild-moisture/data/last`,
-            {
-                headers: {
-                    "X-AIO-Key": process.env.ADAFRUIT_KEY,
-                },
-            }
-        )
+    adaRequest
+        .get("/feeds/soild-moisture/data/last")
         .then(({ data }) => {
             res.status(200).json({
                 ...data,
@@ -72,15 +52,8 @@ export const lastSoildMoisture = async (req, res, next) => {
 };
 
 export const lastFan = async (req, res, next) => {
-    axios
-        .get(
-            `https://io.adafruit.com/api/v2/${process.env.ADAFRUIT_USERNAME}/feeds/fan/data/last`,
-            {
-                headers: {
-                    "X-AIO-Key": process.env.ADAFRUIT_KEY,
-                },
-            }
-        )
+    adaRequest
+        .get("/feeds/fan/data/last")
         .then(({ data }) => {
             res.status(200).json({
                 ...data,
@@ -95,15 +68,8 @@ export const lastFan = async (req, res, next) => {
 };
 
 export const lastLight = async (req, res, next) => {
-    axios
-        .get(
-            `https://io.adafruit.com/api/v2/${process.env.ADAFRUIT_USERNAME}/feeds/light/data/last`,
-            {
-                headers: {
-                    "X-AIO-Key": process.env.ADAFRUIT_KEY,
-                },
-            }
-        )
+    adaRequest
+        .get("/feeds/light/data/last")
         .then(({ data }) => {
             res.status(200).json({
                 ...data,
@@ -118,15 +84,8 @@ export const lastLight = async (req, res, next) => {
 };
 
 export const lastMode = async (req, res, next) => {
-    axios
-        .get(
-            `https://io.adafruit.com/api/v2/${process.env.ADAFRUIT_USERNAME}/feeds/mode/data/last`,
-            {
-                headers: {
-                    "X-AIO-Key": process.env.ADAFRUIT_KEY,
-                },
-            }
-        )
+    adaRequest
+        .get("/feeds/mode/data/last")
         .then(({ data }) => {
             res.status(200).json({
                 ...data,
@@ -141,15 +100,8 @@ export const lastMode = async (req, res, next) => {
 };
 
 export const lastPump = async (req, res, next) => {
-    axios
-        .get(
-            `https://io.adafruit.com/api/v2/${process.env.ADAFRUIT_USERNAME}/feeds/pump/data/last`,
-            {
-                headers: {
-                    "X-AIO-Key": process.env.ADAFRUIT_KEY,
-                },
-            }
-        )
+    adaRequest
+        .get("/feeds/pump/data/last")
         .then(({ data }) => {
             res.status(200).json({
                 ...data,
@@ -277,16 +229,10 @@ export const getTemperatures = async (req, res, next) => {
     if (hours < 1) {
         hours = 1;
     }
-    await axios
-        .get(
-            `https://io.adafruit.com/api/v2/${process.env.ADAFRUIT_USERNAME}/feeds/temperature/data/chart`,
-            {
-                params: params,
-                headers: {
-                    "X-AIO-Key": process.env.ADAFRUIT_KEY,
-                },
-            }
-        )
+    adaRequest
+        .get(`/feeds/temperature/data/chart`, {
+            params: params,
+        })
         .then(({ data }) => {
             res.status(200).json(data);
         })
@@ -314,16 +260,10 @@ export const getHumidities = async (req, res, next) => {
     if (hours < 1) {
         hours = 1;
     }
-    await axios
-        .get(
-            `https://io.adafruit.com/api/v2/${process.env.ADAFRUIT_USERNAME}/feeds/humidity/data/chart`,
-            {
-                params: params,
-                headers: {
-                    "X-AIO-Key": process.env.ADAFRUIT_KEY,
-                },
-            }
-        )
+    adaRequest
+        .get(`/feeds/humidity/data/chart`, {
+            params: params,
+        })
         .then(({ data }) => {
             res.status(200).json(data);
         })
@@ -351,16 +291,10 @@ export const getSoildMoistures = async (req, res, next) => {
     if (hours < 1) {
         hours = 1;
     }
-    await axios
-        .get(
-            `https://io.adafruit.com/api/v2/${process.env.ADAFRUIT_USERNAME}/feeds/soild-moisture/data/chart`,
-            {
-                params: params,
-                headers: {
-                    "X-AIO-Key": process.env.ADAFRUIT_KEY,
-                },
-            }
-        )
+    adaRequest
+        .get(`/feeds/soild-moisture/data/chart`, {
+            params: params,
+        })
         .then(({ data }) => {
             res.status(200).json(data);
         })
@@ -433,20 +367,15 @@ export const getDayTemperatures = async (req, res, next) => {
             hours: 24,
         };
     }
-    await axios
-        .get(
-            `https://io.adafruit.com/api/v2/${process.env.ADAFRUIT_USERNAME}/feeds/temperature/data/chart`,
-            {
-                params: params,
-                headers: {
-                    "X-AIO-Key": process.env.ADAFRUIT_KEY,
-                },
-            }
-        )
+    adaRequest
+        .get(`/feeds/temperature/data/chart`, {
+            params: params,
+        })
         .then(({ data }) => {
             let values = data["data"];
             let avgValues = dataCal(values);
             let result = [];
+            return res.json(values);
             for (let i = 0; i < 24; i++) {
                 result.push({ hour: i, value: avgValues[i] });
             }
@@ -491,16 +420,10 @@ export const getDayHumidities = async (req, res, next) => {
             hours: 24,
         };
     }
-    await axios
-        .get(
-            `https://io.adafruit.com/api/v2/${process.env.ADAFRUIT_USERNAME}/feeds/humidity/data/chart`,
-            {
-                params: params,
-                headers: {
-                    "X-AIO-Key": process.env.ADAFRUIT_KEY,
-                },
-            }
-        )
+    adaRequest
+        .get(`/feeds/humidity/data/chart`, {
+            params: params,
+        })
         .then(({ data }) => {
             let values = data["data"];
             let avgValues = dataCal(values);
@@ -549,16 +472,10 @@ export const getDaySoildMoistures = async (req, res, next) => {
             hours: 24,
         };
     }
-    await axios
-        .get(
-            `https://io.adafruit.com/api/v2/${process.env.ADAFRUIT_USERNAME}/feeds/soild-moisture/data/chart`,
-            {
-                params: params,
-                headers: {
-                    "X-AIO-Key": process.env.ADAFRUIT_KEY,
-                },
-            }
-        )
+    adaRequest
+        .get(`/feeds/soild-moisture/data/chart`, {
+            params: params,
+        })
         .then(({ data }) => {
             let values = data["data"];
             let avgValues = dataCal(values);
