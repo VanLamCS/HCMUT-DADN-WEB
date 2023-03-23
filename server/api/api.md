@@ -22,6 +22,12 @@
 
 -   [ Get Soild Moisture Dataset API ](#get-soild-moisture-dataset-api)
 
+-   [ Get Daily Temperature API ](#get-daily-temperature-api)
+
+-   [ Get Daily Humidity API ](#get-daily-humidity-api)
+
+-   [ Get Daily Soild-Moisture API ](#get-daily-soild-moisture-api)
+
 -   [ Set Fan Data API ](#set-fan-data-api)
 
 -   [ Set Mode Data API ](#set-mode-data-api)
@@ -735,6 +741,210 @@ This endpoint is used to get soild-moisture dataset.
         "2023-02-25T17:20:00Z",
         "32.0"
         ]
+    ]
+}
+```
+
+# Get Daily Temperature API
+
+This endpoint is used to get the temperature in 24 hours.
+
+## Request
+
+`GET api/data/daytemperatures`
+
+### Request Header
+
+| Header        | Description                               |
+| ------------- | ----------------------------------------- |
+| Authorization | Required. Set to `Bearer <access token>`. |
+
+| Param | Description                                                      |
+| ----- | ---------------------------------------------------------------- |
+| date  | Optional. `ISO Date Format` of the time in day need to get data. |
+
+### Example
+
+`api/data/daytemperatures?date=2023-02-18T17:00:00.000Z`
+
+## Response
+
+### Successful Response
+
+#### HTTP Status Code
+
+| Status Code | Description     |
+| ----------- | --------------- |
+| 200         | OK. Successful. |
+
+#### Response Body
+
+| Property | Data type | Description                  |
+| -------- | --------- | ---------------------------- |
+| feed_key | string    | Name of feed.                |
+| data     | array     | Array contains objects data. |
+
+#### Example
+
+```json
+{
+    HTTP/1.1 200 OK
+    "feed_key": "temperature",
+    "data": [
+        {
+        "hour": 0,
+        "value": 32.09090909090909
+        },
+        ...
+        {
+        "hour": 17,
+        "value": 31.78048780487805
+        },
+        {
+        "hour": 18,
+        "value": 30.779661016949152
+        },
+        ...
+        {
+        "hour": 23,
+        "value": 30.346153846153847
+        }
+    ]
+}
+```
+
+# Get Daily Humidity API
+
+This endpoint is used to get the humidity in 24 hours.
+
+## Request
+
+`GET api/data/dayhumidity`
+
+### Request Header
+
+| Header        | Description                               |
+| ------------- | ----------------------------------------- |
+| Authorization | Required. Set to `Bearer <access token>`. |
+
+| Param | Description                                                      |
+| ----- | ---------------------------------------------------------------- |
+| date  | Optional. `ISO Date Format` of the time in day need to get data. |
+
+### Example
+
+`api/data/dayhumidities?date=2023-02-18T17:00:00.000Z`
+
+## Response
+
+### Successful Response
+
+#### HTTP Status Code
+
+| Status Code | Description     |
+| ----------- | --------------- |
+| 200         | OK. Successful. |
+
+#### Response Body
+
+| Property | Data type | Description                  |
+| -------- | --------- | ---------------------------- |
+| feed_key | string    | Name of feed.                |
+| data     | array     | Array contains objects data. |
+
+#### Example
+
+```json
+{
+    HTTP/1.1 200 OK
+    "feed_key": "humidity",
+    "data": [
+        {
+        "hour": 0,
+        "value": 32.09090909090909
+        },
+        ...
+        {
+        "hour": 17,
+        "value": 31.78048780487805
+        },
+        {
+        "hour": 18,
+        "value": 30.779661016949152
+        },
+        ...
+        {
+        "hour": 23,
+        "value": 30.346153846153847
+        }
+    ]
+}
+```
+
+# Get Daily Soild-Moisture API
+
+This endpoint is used to get the soild-moisture in 24 hours.
+
+## Request
+
+`GET api/data/daysoildmoistures`
+
+### Request Header
+
+| Header        | Description                               |
+| ------------- | ----------------------------------------- |
+| Authorization | Required. Set to `Bearer <access token>`. |
+
+| Param | Description                                                      |
+| ----- | ---------------------------------------------------------------- |
+| date  | Optional. `ISO Date Format` of the time in day need to get data. |
+
+### Example
+
+`api/data/daysoildmoistures?date=2023-02-18T17:00:00.000Z`
+
+## Response
+
+### Successful Response
+
+#### HTTP Status Code
+
+| Status Code | Description     |
+| ----------- | --------------- |
+| 200         | OK. Successful. |
+
+#### Response Body
+
+| Property | Data type | Description                  |
+| -------- | --------- | ---------------------------- |
+| feed_key | string    | Name of feed.                |
+| data     | array     | Array contains objects data. |
+
+#### Example
+
+```json
+{
+    HTTP/1.1 200 OK
+    "feed_key": "soild-moisture",
+    "data": [
+        {
+        "hour": 0,
+        "value": 32.09090909090909
+        },
+        ...
+        {
+        "hour": 17,
+        "value": 31.78048780487805
+        },
+        {
+        "hour": 18,
+        "value": 30.779661016949152
+        },
+        ...
+        {
+        "hour": 23,
+        "value": 30.346153846153847
+        }
     ]
 }
 ```
