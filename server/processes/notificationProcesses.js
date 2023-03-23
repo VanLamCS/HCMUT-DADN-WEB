@@ -1,13 +1,14 @@
 import mqtt from "mqtt";
 import Notification from "../models/notificationModel.js";
 
-const saveNotiOnDb = (feed, content, createdAt) => {
+const saveNotiOnDb = async (feed, content, createdAt) => {
     let noti = new Notification({
         feed,
         content,
         createdAt,
     });
-    noti.save()
+    await noti
+        .save()
         .then((res) => {
             console.log(`${res.content} and saved into database`);
             return true;
