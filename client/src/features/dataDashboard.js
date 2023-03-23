@@ -7,23 +7,25 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   pumpStatus: -1,
   fanStatus: -1,
-  autoModeStatus: -1,
-  ledStatus: -1
+  ledStatus: -1,
+  modeStatus: -1,
 };
 
-export const dataDayChart = createSlice({
-  name: "dataDayChart",
+export const deviceStatus = createSlice({
+  name: "deviceStatus",
   initialState,
   reducers: {
-    setDataCharts: (state, action) => {
-      state.dataDayMoisures = action.payload.dataDayMoisures;
-      state.dataDayHumidities = action.payload.dataDayHumidities;
-      state.dataDayTemperatures = action.payload.dataDayTemperatures;
+    getDeviceStatus: (state, action) => {
+      console.log("check payload: ", action.payload)
+      state.pumpStatus = action.payload.pumpStatus
+      state.fanStatus = action.payload.fanStatus
+      state.ledStatus = action.payload.ledStatus
+      state.modeStatus = action.payload.modeStatus
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setDataCharts } = dataDayChart.actions;
+export const { getDeviceStatus } = deviceStatus.actions;
 
-export default dataDayChart.reducer;
+export default deviceStatus.reducer;

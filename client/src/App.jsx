@@ -11,30 +11,68 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./theme";
 import Calendar from "./scenes/calendar/calendar";
 import Login from "./scenes/login";
-import { get24SolidHumidities, get24SolidMoistures, get24SolidTemperatures, getNotification } from "./api";
+import {
+  get24SolidHumidities,
+  get24SolidMoistures,
+  get24SolidTemperatures,
+  getFan,
+  getHumidity,
+  getLed,
+  getMode,
+  getNotification,
+  getPump,
+  getSoildMoisture,
+  getTemperature,
+} from "./api";
 import { setDataCharts } from "./features/dataChart";
 import { useDispatch } from "react-redux";
 import { getDataNotification } from "./features/notification";
+import { getDeviceStatus } from "./features/dataDashboard";
+import { getInformationHome } from "./features/dataHome";
 
 function App() {
   const [theme, colorMode] = useMode();
   const [isSidebar, setIsSidebar] = useState(true);
   const [openMobile, setOpenMobile] = useState(false);
-  const [reload, setReload] = useState(false)
+  const [reload, setReload] = useState(false);
   const user = JSON.parse(localStorage.getItem("user"));
   const dispatch = useDispatch();
 
   const dataProcessing = async () => {
+    const dataTemperature = await getTemperature();
+    const dataHumidity = await getHumidity();
+    const dataSoildMoisture = await getSoildMoisture();
+    dispatch(getInformationHome({
+      temperature: dataTemperature.data.value,
+      humidity: dataHumidity.data.value,
+      moisture: dataSoildMoisture.data.value
+    }))
+
+    const resNotifycation = await getNotification();
+    dispatch(getDataNotification(resNotifycation.data.data));
+
+    const resFanStatus = await getFan();
+    const resPumpStatus = await getPump();
+    const resLedStatus = await getLed();
+    const resModeStatus = await getMode();
+
+    dispatch(
+      getDeviceStatus({
+        pumpStatus: resPumpStatus.data.value,
+        fanStatus: resFanStatus.data.value,
+        ledStatus: resLedStatus.data.value,
+        modeStatus: resModeStatus.data.value,
+      })
+    );
+
     const resMoisures = await get24SolidMoistures();
     const resHumidities = await get24SolidHumidities();
     const resTemperatures = await get24SolidTemperatures();
-    const resNotifycation = await getNotification();
-    dispatch(getDataNotification(resNotifycation.data.data))
 
     const tempMoisures = resMoisures.data.data;
     const tempHumidities = resHumidities.data.data;
     const tempTemperatures = resTemperatures.data.data;
-    // console.log("check moisures: ", tempTemperatures)
+
     tempMoisures.forEach((obj) => {
       obj.x = obj.hour;
       delete obj.hour;
@@ -73,38 +111,58 @@ function App() {
 
     dispatch(
       setDataCharts({
-        dataDayHumidities: dataChartMoisures,
-        dataDayMoisures: dataChartHumidities,
+        dataDayHumidities: dataChartHumidities,
+        dataDayMoisures: dataChartMoisures,
         dataDayTemperatures: dataChartTemperatures,
       })
     );
   };
   useEffect(() => {
-    dataProcessing()
-  }, [])
+    dataProcessing();
+  }, []);
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
-      <CssBaseline/>
+        <CssBaseline />
         <div className="app">
           {!user ? (
             <Routes>
-              <Route path="/" element={<Login reload={reload} setReload={setReload} />}></Route>
-              <Route path="/login" element={<Login reload={reload} setReload={setReload} />} />
+              <Route
+                path="/"
+                element={<Login reload={reload} setReload={setReload} />}
+              ></Route>
+              <Route
+                path="/login"
+                element={<Login reload={reload} setReload={setReload} />}
+              />
             </Routes>
           ) : (
             <>
               <Sidebar openMobile={openMobile} setOpenMobile={setOpenMobile} />
               <main className="content">
-                <Topbar reload={reload} setReload={setReload} openMobile={openMobile} setOpenMobile={setOpenMobile} />
+                <Topbar
+                  reload={reload}
+                  setReload={setReload}
+                  openMobile={openMobile}
+                  setOpenMobile={setOpenMobile}
+                />
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="/dashboard" element={<DashBoard />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/form" element={<Form />} />
-                  <Route path="/line-humidities" element={<Line whatRender="Humidities" />} />
-                  <Route path="/line-temperatures" element={<Line whatRender="Temperatures" />} />
-                  <Route path="/line-moisures" element={<Line whatRender="Moisures" />} />
+                  <Route
+                    path="/line-moisures"
+                    element={<Line whatRender="Moisures" />}
+                  />
+                  <Route
+                    path="/line-temperatures"
+                    element={<Line whatRender="Temperatures" />}
+                  />
+                  <Route
+                    path="/line-humidities"
+                    element={<Line whatRender="Humidities" />}
+                  />
                   <Route path="/faq" element={<FAQ />} />
                   <Route path="/calendar" element={<Calendar />} />
                 </Routes>

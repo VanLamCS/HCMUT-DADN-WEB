@@ -11,9 +11,9 @@ import {
   setMode,
   setPump,
 } from "../../api";
-// import CircularProgress from '@mui/joy/CircularProgress';
 import { CircularProgress } from "@mui/material";
 import { io } from "socket.io-client";
+import { useSelector } from "react-redux";
 
 const socket = io("http://localhost:8000");
 
@@ -25,6 +25,11 @@ const ToggleButton = ({
   setIsAutoMode,
 }) => {
   const [isOn, setIsOn] = useState(false);
+  const [disable, setDisable] = useState(false);
+  const initialStateFan = useSelector(state => state.deviceStatus.fanStatus)
+  const initialStatePump = useSelector(state => state.deviceStatus.pumpStatus)
+  const initialStateLed = useSelector(state => state.deviceStatus.ledStatus)
+  const initialStateMode = useSelector(state => state.deviceStatus.modeStatus)
 
   const handleToggle = async (e) => {
     setIsOn((toggle) => !toggle);
@@ -92,12 +97,26 @@ const ToggleButton = ({
   };
 
   const changeAutoMode = async () => {
+    if (toggle === "") {
+      setDisable(true);
+    }
+    if (!isAutoMode) {
+      setDisable(false);
+    }
+    if (isAutoMode && title === "Fan") {
+      setDisable(true);
+    } else if (isAutoMode && title === "Pump") {
+      setDisable(true);
+    }
+
     if (title === "Fan" && isAutoMode) {
       setToggle("OFF");
+      setIsOn(false)
       const postData = { value: "0" };
       await setFan(postData);
     }
     if (title === "Pump" && isAutoMode) {
+      setIsOn(false)
       setToggle("OFF");
       const postData = { value: "0" };
       await setPump(postData);
@@ -115,12 +134,12 @@ const ToggleButton = ({
           setIsOn(false);
         }
       });
-      const { data } = await getFan();
+      // const { data } = await getFan();
       if (isAutoMode) {
         setToggle("OFF");
         setIsOn(false);
       } else {
-        const value = data.value;
+        const value = initialStateFan;
         if (value === "0") {
           setToggle("OFF");
           setIsOn(false);
@@ -141,12 +160,12 @@ const ToggleButton = ({
           setIsOn(false);
         }
       });
-      const { data } = await getPump();
+      // const { data } = await getPump();
       if (isAutoMode) {
         setToggle("OFF");
         setIsOn(false);
       } else {
-        const value = data.value;
+        const value = initialStatePump;
         if (value === "0") {
           setToggle("OFF");
           setIsOn(false);
@@ -167,8 +186,8 @@ const ToggleButton = ({
           setIsOn(false);
         }
       });
-      const { data } = await getMode();
-      const value = data.value;
+      // const { data } = await getMode();
+      const value = initialStateMode;
       if (value === "0") {
         setToggle("OFF");
         setIsOn(false);
@@ -189,8 +208,8 @@ const ToggleButton = ({
           setIsOn(false);
         }
       });
-      const { data } = await getLed();
-      const value = data.value;
+      // const { data } = await getLed();
+      const value = initialStateLed;
       if (value === "0") {
         setToggle("OFF");
         setIsOn(false);
@@ -203,7 +222,7 @@ const ToggleButton = ({
 
   useEffect(() => {
     getInitialDevice();
-  }, []);
+  }, [initialStateFan, initialStatePump, initialStateMode, initialStateLed]);
 
   useEffect(() => {
     changeAutoMode();
@@ -229,12 +248,8 @@ const ToggleButton = ({
             value={isOn}
             type="checkbox"
             onChange={handleToggle}
-            disabled={
-              toggle === "" ||
-              (isAutoMode && title !== "Auto Mode")
-              // (isAutoMode && title !== "Led")
-            }
-            />
+            disabled={disable}
+          />
           <span className={`${styles.slider} ${styles.round}`}></span>
         </label>
       </div>

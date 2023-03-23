@@ -24,14 +24,22 @@ const Home = () => {
   const [humidity, setHumidity] = useState(0);
   const [soildMoisture, setSoildMoisture] = useState(0);
   const user = localStorage.getItem("user");
-  const navigate = useNavigate();
   const dataNotifications = useSelector(
     (state) => state.dataNotifications.message
   );
-  const [updatedData, setUpdatedData] = useState([]);
+
+  const homeTemperature = useSelector(
+    (state) => state.informationHome.temperature
+  );
+
+  const homeHumidity = useSelector((state) => state.informationHome.humidity);
+
+  const homeMoisure = useSelector((state) => state.informationHome.moisture);
+
+  var updatedData = [];
 
   if (Object.keys(dataNotifications).length !== 0) {
-    const temp = dataNotifications.map((obj) => {
+    updatedData = dataNotifications.map((obj) => {
       const dateObj = new Date(obj.createdAt);
       const year = dateObj.getFullYear();
       const month = ("0" + (dateObj.getMonth() + 1)).slice(-2);
@@ -44,18 +52,14 @@ const Home = () => {
         createdAt: `${month}/${day}/${year} ${hours}:${minutes}:${seconds}`,
       };
     });
-    setUpdatedData(temp);
-    // console.log("check redux noti: ", dataNotifications);
   }
 
   const fetchData = async () => {
-    const dataTemperature = await getTemperature();
-    const dataHumidity = await getHumidity();
-    const dataSoildMoisture = await getSoildMoisture();
-
-    setTemperature(dataTemperature.data.value);
-    setHumidity(dataHumidity.data.value);
-    setSoildMoisture(dataSoildMoisture.data.value);
+    if (homeTemperature !== -1 && homeHumidity !== -1 && homeMoisure !== -1) {
+      setTemperature(homeTemperature);
+      setHumidity(homeHumidity);
+      setSoildMoisture(homeMoisure);
+    }
   };
 
   const isTablet = useMediaQuery("(max-width: 1024px)");
@@ -113,6 +117,7 @@ const Home = () => {
   useEffect(() => {
     if (user) {
       fetchData();
+
       socket.on("temperatureUpdate", ({ temperature }) => {
         setTemperature(temperature);
       });
@@ -124,8 +129,14 @@ const Home = () => {
       socket.on("soildMoistureUpdate", ({ soildMoisture }) => {
         setSoildMoisture(soildMoisture);
       });
+
+      socket.on("newNotification", (data) => {
+        console.log("check json: ", JSON.stringify(data))
+        // updatedData.unshift(data);
+      });
+
     }
-  }, []);
+  }, [homeTemperature, homeHumidity, homeMoisure]);
 
   return (
     <Box m="20px">
@@ -288,6 +299,7 @@ const Home = () => {
                     alignItems="center"
                     borderBottom={`4px solid ${colors.primary[500]}`}
                     p="15px"
+                    width="100%"
                   >
                     <Box>
                       <Typography mr="15px" color={colors.grey[100]}>
@@ -334,19 +346,6 @@ const Home = () => {
             </Typography>
             <Typography>Includes extra misc expenditures and costs</Typography>
           </Box>
-        </Box>
-        <Box
-          gridColumn="span 4"
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-        >
-          <Typography
-            variant="h5"
-            fontWeight="600"
-            sx={{ padding: "30px 30px 0 30px" }}
-          >
-            Sales Quantity
-          </Typography>
         </Box>
       </Box>
     </Box>
