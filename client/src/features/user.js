@@ -10,10 +10,8 @@ export const userInfoSlice = createSlice({
   initialState,
   reducers: {
     setUserInfo: (state, action) => {
-      console.log("check payload: ", action.payload);
       state.email = action.payload.email;
       state.name = action.payload.name;
-      console.log("check nè: ", state.email, state.name);
     },
   },
 });

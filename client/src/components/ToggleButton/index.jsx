@@ -13,6 +13,9 @@ import {
 } from "../../api";
 // import CircularProgress from '@mui/joy/CircularProgress';
 import { CircularProgress } from "@mui/material";
+import { io } from "socket.io-client";
+
+const socket = io("http://localhost:8000");
 
 const ToggleButton = ({ title, toggle, setToggle }) => {
   const [isOn, setIsOn] = useState(false);
@@ -69,10 +72,17 @@ const ToggleButton = ({ title, toggle, setToggle }) => {
   };
 
   const getInitialDevice = async () => {
-    console.log("I am here")
     if (title === "Fan") {
+      socket.on("fanUpdate", ({ fan }) => {
+        if (fan == 1) {
+          setToggle("ON");
+          setIsOn(true);
+        } else {
+          setToggle("OFF");
+          setIsOn(false);
+        }
+      });
       const { data } = await getFan();
-      console.log("check fan: ", data)
       const value = data.value;
       if (value === "0") {
         setToggle("OFF");
@@ -84,6 +94,15 @@ const ToggleButton = ({ title, toggle, setToggle }) => {
     }
 
     if (title === "Pump") {
+      socket.on("pumpUpdate", ({ soildMoisture }) => {
+        if (soildMoisture == 1) {
+          setToggle("ON");
+          setIsOn(true);
+        } else {
+          setToggle("OFF");
+          setIsOn(false);
+        }
+      });
       const { data } = await getPump();
       const value = data.value;
       if (value === "0") {
@@ -96,6 +115,15 @@ const ToggleButton = ({ title, toggle, setToggle }) => {
     }
 
     if (title === "Auto Mode") {
+      socket.on("modeUpdate", ({ mode }) => {
+        if (mode == 1) {
+          setToggle("ON");
+          setIsOn(true);
+        } else {
+          setToggle("OFF");
+          setIsOn(false);
+        }
+      });
       const { data } = await getMode();
       const value = data.value;
       if (value === "0") {
@@ -108,6 +136,15 @@ const ToggleButton = ({ title, toggle, setToggle }) => {
     }
 
     if (title === "Led") {
+      socket.on("lightUpdate", ({ soildMoisture }) => {
+        if (soildMoisture == 1) {
+          setToggle("ON");
+          setIsOn(true);
+        } else {
+          setToggle("OFF");
+          setIsOn(false);
+        }
+      });
       const { data } = await getLed();
       const value = data.value;
       if (value === "0") {

@@ -1,8 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
 import userInfoReducer from '../features/user'
+import dataDayChartReducer from '../features/dataChart'
 
 export const store = configureStore({
   reducer: {
-    userInfo: userInfoReducer
+    userInfo: userInfoReducer,
+    dataDayChart: dataDayChartReducer
   },
 })

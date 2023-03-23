@@ -1,7 +1,10 @@
 import { Grid, Box, useMediaQuery } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "../../components/Header";
 import ToggleDashBoard from "../../components/ToggleDashBoard";
+import { io } from "socket.io-client";
+
+const socket = io("http://localhost:8000"); 
 
 const DashBoard = () => {
   const isMobile = useMediaQuery("(max-width: 600px)");

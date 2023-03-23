@@ -7,81 +7,53 @@ import {
   get24SolidMoistures,
   get24SolidTemperatures,
 } from "../api";
+import { useSelector } from "react-redux";
 
-const LineChart = ({
-  whatRender = "All",
-}) => {
+const LineChart = ({ whatRender = "All" }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [test, setTest] = useState([]);
+  const [showChart, setShowChart] = useState([]);
+  const dataMoisures = useSelector(
+    (state) => state.dataDayChart.dataDayMoisures
+  );
+
+  const dataHumidities = useSelector(
+    (state) => state.dataDayChart.dataDayHumidities
+  );
+
+  const dataTemperatures = useSelector(
+    (state) => state.dataDayChart.dataDayTemperatures
+  );
 
   const fetchData = async () => {
-    const resMoisures = await get24SolidMoistures();
-    const resHumidities = await get24SolidHumidities();
-    const resTemperatures = await get24SolidTemperatures();
-
-    const tempMoisures = resMoisures.data.data;
-    const tempHumidities = resHumidities.data.data;
-    const tempTemperatures = resTemperatures.data.data;
-
-    tempMoisures.forEach((obj) => {
-      obj.x = obj.hour;
-      delete obj.hour;
-      obj.y = obj.value;
-      delete obj.value;
-    });
-
-    tempHumidities.forEach((obj) => {
-      obj.x = obj.hour;
-      delete obj.hour;
-      obj.y = obj.value;
-      delete obj.value;
-    });
-
-    tempTemperatures.forEach((obj) => {
-      obj.x = obj.hour;
-      delete obj.hour;
-      obj.y = obj.value;
-      delete obj.value;
-    });
-
-    const dataChartMoisures = {
-      id: "Moisures",
-      data: tempMoisures,
-    };
-
-    const dataChartHumidities = {
-      id: "Humidities",
-      data: tempHumidities,
-    };
-
-    const dataChartTemperatures = {
-      id: "Temperatures",
-      data: tempTemperatures,
-    };
-
-    const myArray = [];
-    if (whatRender === "All") {
-      myArray.push(dataChartMoisures);
-      myArray.push(dataChartHumidities);
-      myArray.push(dataChartTemperatures);
-    } else if (whatRender === "Moisures") {
-      myArray.push(dataChartMoisures);
-    } else if (whatRender === "Temperatures") {
-      myArray.push(dataChartTemperatures);
-    } else if (whatRender === "Humidities") {
-      myArray.push(dataChartHumidities);
+    if (
+      Object.keys(dataMoisures).length !== 0 ||
+      Object.keys(dataHumidities).length !== 0 || 
+      Object.keys(dataTemperatures).length !== 0
+    ) {
+      const renderData = [];
+      if (whatRender == "All") {
+        renderData.push(dataMoisures);
+        renderData.push(dataHumidities);
+        renderData.push(dataTemperatures);
+      } else if (whatRender === "Moisures") {
+        renderData.push(dataMoisures);
+      } else if (whatRender === "Temperatures") {
+        renderData.push(dataTemperatures);
+      } else if (whatRender === "Humidities") {
+        renderData.push(dataHumidities);
+      }
+      setShowChart(renderData)
     }
-    setTest(myArray);
   };
 
   useEffect(() => {
     fetchData();
-  }, [whatRender]);
+  }, [whatRender, dataMoisures, dataHumidities, dataTemperatures]);
 
   return (
     <ResponsiveLine
-      data={test}
+      data={showChart}
       theme={{
         axis: {
           domain: {

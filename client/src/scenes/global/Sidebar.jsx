@@ -18,6 +18,7 @@ import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import { useMediaQuery } from "@mui/material";
+import { useLocation } from "react-router-dom";
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -43,13 +44,25 @@ const Sidebar = ({ openMobile, setOpenMobile }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [selected, setSelected] = useState("Dashboard");
-  const [name, setName] = useState(localStorage.getItem('name'))
-  const [email, setEmail] = useState(localStorage.getItem('email'))
-
+  const [selected, setSelected] = useState("");
+  const location = useLocation();
+  const [name, setName] = useState(localStorage.getItem("name"));
+  const [email, setEmail] = useState(localStorage.getItem("email"));
 
   useEffect(() => {
     setOpenMobile(false);
+    const specificLocation = location.pathname;
+    if (specificLocation === "/") {
+      setSelected("Home");
+    } else if (specificLocation === "/dashboard") {
+      setSelected("Dashboard");
+    } else if (specificLocation === "/line-moisures") {
+      setSelected("Moisures Chart");
+    } else if (specificLocation === "/line-humidities") {
+      setSelected("Humidities Chart");
+    } else if (specificLocation === "/line-temperatures") {
+      setSelected("Temperatures Chart");
+    }
   }, [setOpenMobile]);
 
   return (
