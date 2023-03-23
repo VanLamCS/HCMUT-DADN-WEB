@@ -17,44 +17,64 @@ import { io } from "socket.io-client";
 
 const socket = io("http://localhost:8000");
 
-const ToggleButton = ({ title, toggle, setToggle }) => {
+const ToggleButton = ({
+  title,
+  toggle,
+  setToggle,
+  isAutoMode,
+  setIsAutoMode,
+}) => {
   const [isOn, setIsOn] = useState(false);
 
   const handleToggle = async (e) => {
     setIsOn((toggle) => !toggle);
 
     if (title === "Fan") {
-      if (toggle === "OFF") {
-        setToggle("ON");
-        const postData = { value: "1" };
-        const { data } = await setFan(postData);
-      } else {
+      if (isAutoMode) {
         setToggle("OFF");
         const postData = { value: "0" };
-        const { data } = await setFan(postData);
+        await setFan(postData);
+      } else {
+        if (toggle === "OFF") {
+          setToggle("ON");
+          const postData = { value: "1" };
+          await setFan(postData);
+        } else {
+          setToggle("OFF");
+          const postData = { value: "0" };
+          await setFan(postData);
+        }
       }
     }
     if (title === "Pump") {
-      if (toggle === "OFF") {
-        setToggle("ON");
-        const postData = { value: "1" };
-        const { data } = await setPump(postData);
-      } else {
+      if(isAutoMode) {
         setToggle("OFF");
         const postData = { value: "0" };
-        const { data } = await setPump(postData);
+        await setPump(postData);
+      }
+      else {
+        if (toggle === "OFF") {
+          setToggle("ON");
+          const postData = { value: "1" };
+          await setPump(postData);
+        } else {
+          setToggle("OFF");
+          const postData = { value: "0" };
+          await setPump(postData);
+        }
       }
     }
 
     if (title === "Auto Mode") {
       if (toggle === "OFF") {
+        setIsAutoMode(true);
         setToggle("ON");
         const postData = { value: "1" };
-        const { data } = await setMode(postData);
+        await setMode(postData);
       } else {
         setToggle("OFF");
         const postData = { value: "0" };
-        const { data } = await setMode(postData);
+        await setMode(postData);
       }
     }
 
@@ -62,11 +82,11 @@ const ToggleButton = ({ title, toggle, setToggle }) => {
       if (toggle === "OFF") {
         setToggle("ON");
         const postData = { value: "1" };
-        const { data } = await setLight(postData);
+        await setLight(postData);
       } else {
         setToggle("OFF");
         const postData = { value: "0" };
-        const { data } = await setLight(postData);
+        await setLight(postData);
       }
     }
   };
@@ -83,19 +103,24 @@ const ToggleButton = ({ title, toggle, setToggle }) => {
         }
       });
       const { data } = await getFan();
-      const value = data.value;
-      if (value === "0") {
+      if (isAutoMode) {
         setToggle("OFF");
         setIsOn(false);
-      } else if (value === "1") {
-        setToggle("ON");
-        setIsOn(true);
+      } else {
+        const value = data.value;
+        if (value === "0") {
+          setToggle("OFF");
+          setIsOn(false);
+        } else if (value === "1") {
+          setToggle("ON");
+          setIsOn(true);
+        }
       }
     }
 
     if (title === "Pump") {
-      socket.on("pumpUpdate", ({ soildMoisture }) => {
-        if (soildMoisture == 1) {
+      socket.on("pumpUpdate", ({ pump }) => {
+        if (pump == 1) {
           setToggle("ON");
           setIsOn(true);
         } else {
@@ -104,13 +129,18 @@ const ToggleButton = ({ title, toggle, setToggle }) => {
         }
       });
       const { data } = await getPump();
-      const value = data.value;
-      if (value === "0") {
+      if (isAutoMode) {
         setToggle("OFF");
         setIsOn(false);
-      } else if (value === "1") {
-        setToggle("ON");
-        setIsOn(true);
+      } else {
+        const value = data.value;
+        if (value === "0") {
+          setToggle("OFF");
+          setIsOn(false);
+        } else if (value === "1") {
+          setToggle("ON");
+          setIsOn(true);
+        }
       }
     }
 
@@ -130,14 +160,15 @@ const ToggleButton = ({ title, toggle, setToggle }) => {
         setToggle("OFF");
         setIsOn(false);
       } else if (value === "1") {
+        setIsAutoMode(true);
         setToggle("ON");
         setIsOn(true);
       }
     }
 
     if (title === "Led") {
-      socket.on("lightUpdate", ({ soildMoisture }) => {
-        if (soildMoisture == 1) {
+      socket.on("lightUpdate", ({ light }) => {
+        if (light == 1) {
           setToggle("ON");
           setIsOn(true);
         } else {
@@ -181,7 +212,7 @@ const ToggleButton = ({ title, toggle, setToggle }) => {
             value={isOn}
             type="checkbox"
             onChange={handleToggle}
-            disabled={toggle === ""}
+            disabled={toggle === "" || isAutoMode == true}
           />
           <span className={`${styles.slider} ${styles.round}`}></span>
         </label>
