@@ -1,10 +1,14 @@
 import { Grid, Box, useMediaQuery } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../components/Header";
 import ToggleDashBoard from "../../components/ToggleDashBoard";
+import { io } from "socket.io-client";
+
+const socket = io("http://localhost:8000"); 
 
 const DashBoard = () => {
   const isMobile = useMediaQuery("(max-width: 600px)");
+  const [isAutoMode, setIsAutoMode] = useState(false)
 
   return (
     <Box m="20px">
@@ -19,16 +23,16 @@ const DashBoard = () => {
       </Box>
       <Grid container>
         <Grid item xs={12} md={6}>
-          <ToggleDashBoard title="Fan" />
+          <ToggleDashBoard isAutoMode={isAutoMode} setIsAutoMode={setIsAutoMode} title="Fan" />
         </Grid>
         <Grid item xs={12} md={6}>
-          <ToggleDashBoard title="Pump" />
+          <ToggleDashBoard isAutoMode={isAutoMode} setIsAutoMode={setIsAutoMode} title="Pump" />
         </Grid>
         <Grid item xs={12} md={6}>
-          <ToggleDashBoard title="Auto Mode" />
+          <ToggleDashBoard isAutoMode={isAutoMode} setIsAutoMode={setIsAutoMode} title="Auto Mode" />
         </Grid>
         <Grid item xs={12} md={6}>
-          <ToggleDashBoard title="Led" />
+          <ToggleDashBoard isAutoMode={isAutoMode} setIsAutoMode={setIsAutoMode} title="Led" />
         </Grid>
       </Grid>
     </Box>
