@@ -32,7 +32,6 @@ import { getInformationHome } from "./features/dataHome";
 import { io } from "socket.io-client";
 const socket = io("http://localhost:8000"); // Replace with your server's URL
 
-
 function App() {
   const [theme, colorMode] = useMode();
   const [openMobile, setOpenMobile] = useState(false);
@@ -44,15 +43,88 @@ function App() {
     const dataTemperature = await getTemperature();
     const dataHumidity = await getHumidity();
     const dataSoildMoisture = await getSoildMoisture();
-    dispatch(getInformationHome({
-      temperature: dataTemperature.data.value,
-      humidity: dataHumidity.data.value,
-      moisture: dataSoildMoisture.data.value
-    }))
+
+    dispatch(
+      getInformationHome({
+        temperature: dataTemperature.data.value,
+        humidity: dataHumidity.data.value,
+        moisture: dataSoildMoisture.data.value,
+      })
+    );
+
+    //SOCKET
+    socket.on("temperatureUpdate", ({ temperature }) => {
+      dispatch(
+        getInformationHome({
+          temperature: temperature,
+          humidity: dataHumidity.data.value,
+          moisture: dataSoildMoisture.data.value,
+        })
+      );
+    });
+
+    socket.on("humidityUpdate", ({ humidity }) => {
+      dispatch(
+        getInformationHome({
+          temperature: dataTemperature.data.value,
+          humidity: humidity,
+          moisture: dataSoildMoisture.data.value,
+        })
+      );
+    });
+
+    socket.on("soildMoistureUpdate", ({ soildMoisture }) => {
+      dispatch(
+        getInformationHome({
+          temperature: dataTemperature.data.value,
+          humidity: dataHumidity.data.value,
+          moisture: soildMoisture,
+        })
+      );
+    });
 
     const resNotifycation = await getNotification();
 
-    dispatch(getDataNotification(resNotifycation.data.data));
+    const dataNotifications = resNotifycation.data.data;
+
+    var updatedData = [];
+
+    if (Object.keys(dataNotifications).length !== 0) {
+      updatedData = dataNotifications.map((obj) => {
+        const dateObj = new Date(obj.createdAt);
+        const year = dateObj.getFullYear();
+        const month = ("0" + (dateObj.getMonth() + 1)).slice(-2);
+        const day = ("0" + dateObj.getDate()).slice(-2);
+        const hours = ("0" + dateObj.getHours()).slice(-2);
+        const minutes = ("0" + dateObj.getMinutes()).slice(-2);
+        const seconds = ("0" + dateObj.getSeconds()).slice(-2);
+        return {
+          ...obj,
+          createdAt: `${month}/${day}/${year} ${hours}:${minutes}:${seconds}`,
+        };
+      });
+    }
+
+    dispatch(getDataNotification(updatedData));
+
+    socket.on("newNotification", (data) => {
+      console.log("check json: ", JSON.stringify(data));
+      const dateObj = new Date(data.createdAt);
+      const year = dateObj.getFullYear();
+      const month = ("0" + (dateObj.getMonth() + 1)).slice(-2);
+      const day = ("0" + dateObj.getDate()).slice(-2);
+      const hours = ("0" + dateObj.getHours()).slice(-2);
+      const minutes = ("0" + dateObj.getMinutes()).slice(-2);
+      const seconds = ("0" + dateObj.getSeconds()).slice(-2);
+
+      const newData = {
+        content: data.message,
+        createdAt: `${month}/${day}/${year} ${hours}:${minutes}:${seconds}`,
+      };
+
+      const updatedNotifications = [newData, ...updatedData];
+      dispatch(getDataNotification(updatedNotifications));
+    });
 
     const resMoisures = await get24SolidMoistures();
     const resHumidities = await get24SolidHumidities();
