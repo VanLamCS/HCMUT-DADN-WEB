@@ -9,7 +9,6 @@ import { Menu } from "@mui/icons-material";
 import SidebarDrawer from "./SideBarDrawer";
 import * as React from "react";
 import { toast } from "react-toastify";
-import { useSelector } from "react-redux";
 
 const Topbar = ({ openMobile, setOpenMobile, reload, setReload }) => {
   const theme = useTheme();

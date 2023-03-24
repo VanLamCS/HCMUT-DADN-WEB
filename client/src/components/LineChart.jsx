@@ -2,11 +2,6 @@ import { ResponsiveLine } from "@nivo/line";
 import { useTheme } from "@mui/material";
 import { tokens } from "../theme";
 import { useEffect, useState } from "react";
-import {
-  get24SolidHumidities,
-  get24SolidMoistures,
-  get24SolidTemperatures,
-} from "../api";
 import { useSelector } from "react-redux";
 
 const LineChart = ({ whatRender = "All" }) => {

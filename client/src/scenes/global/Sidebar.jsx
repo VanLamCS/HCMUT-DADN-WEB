@@ -32,7 +32,7 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
       onClick={() => setSelected(title)}
       icon={icon}
     >
-      <Typography>{title}</Typography>
+      <Typography m="20px 0" fontSize="0.9rem">{title}</Typography>
       <Link to={to} />
     </MenuItem>
   );

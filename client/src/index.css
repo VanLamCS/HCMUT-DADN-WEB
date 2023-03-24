@@ -11,6 +11,10 @@
 body {
 }
 
+html {
+  font-size: 18px;
+}
+
 .app,
 .content {
   height: 100%;

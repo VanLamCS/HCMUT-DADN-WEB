@@ -5,7 +5,10 @@
     margin-left: 20px;
     margin-bottom: 30px;
     padding: 15px 20px;
-    max-height: 170px;
+    height: 280px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 }
 
 icon {

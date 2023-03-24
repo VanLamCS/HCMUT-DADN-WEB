@@ -29,10 +29,12 @@ import { useDispatch } from "react-redux";
 import { getDataNotification } from "./features/notification";
 import { getDeviceStatus } from "./features/dataDashboard";
 import { getInformationHome } from "./features/dataHome";
+import { io } from "socket.io-client";
+const socket = io("http://localhost:8000"); // Replace with your server's URL
+
 
 function App() {
   const [theme, colorMode] = useMode();
-  const [isSidebar, setIsSidebar] = useState(true);
   const [openMobile, setOpenMobile] = useState(false);
   const [reload, setReload] = useState(false);
   const user = JSON.parse(localStorage.getItem("user"));
@@ -49,25 +51,26 @@ function App() {
     }))
 
     const resNotifycation = await getNotification();
+
     dispatch(getDataNotification(resNotifycation.data.data));
-
-    const resFanStatus = await getFan();
-    const resPumpStatus = await getPump();
-    const resLedStatus = await getLed();
-    const resModeStatus = await getMode();
-
-    dispatch(
-      getDeviceStatus({
-        pumpStatus: resPumpStatus.data.value,
-        fanStatus: resFanStatus.data.value,
-        ledStatus: resLedStatus.data.value,
-        modeStatus: resModeStatus.data.value,
-      })
-    );
 
     const resMoisures = await get24SolidMoistures();
     const resHumidities = await get24SolidHumidities();
     const resTemperatures = await get24SolidTemperatures();
+
+    // const resFanStatus = await getFan();
+    // const resPumpStatus = await getPump();
+    // const resLedStatus = await getLed();
+    // const resModeStatus = await getMode();
+
+    // dispatch(
+    //   getDeviceStatus({
+    //     pumpStatus: resPumpStatus.data.value,
+    //     fanStatus: resFanStatus.data.value,
+    //     ledStatus: resLedStatus.data.value,
+    //     modeStatus: resModeStatus.data.value,
+    //   })
+    // );
 
     const tempMoisures = resMoisures.data.data;
     const tempHumidities = resHumidities.data.data;
