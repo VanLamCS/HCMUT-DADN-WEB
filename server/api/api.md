@@ -1003,13 +1003,13 @@ This endpoint is used to get the notifications.
         "_id": "641c47d2f80c4ff425248faf",
         "feed": "pump",
         "createdAt": "2023-03-23T12:36:34.770Z",
-        "content": "Pump is turned off"
+        "content": "Pump was turned off"
         },
         {
         "_id": "641c47c8f80c4ff425248fad",
         "feed": "pump",
         "createdAt": "2023-03-23T12:36:24.799Z",
-        "content": "Pump is turned off"
+        "content": "Fan was turned off"
         }
     ]
 }
