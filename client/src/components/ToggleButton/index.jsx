@@ -17,6 +17,8 @@ import { useSelector } from "react-redux";
 
 const socket = io("http://localhost:8000");
 
+// global.socket = socket
+
 const ToggleButton = ({
   title,
   toggle,
@@ -109,18 +111,18 @@ const ToggleButton = ({
       setDisable(true);
     }
 
-    if (title === "Fan" && isAutoMode) {
-      setToggle("OFF");
-      setIsOn(false)
-      const postData = { value: "0" };
-      await setFan(postData);
-    }
-    if (title === "Pump" && isAutoMode) {
-      setIsOn(false)
-      setToggle("OFF");
-      const postData = { value: "0" };
-      await setPump(postData);
-    }
+    // if (title === "Fan" && isAutoMode) {
+    //   setToggle("OFF");
+    //   setIsOn(false)
+    //   const postData = { value: "0" };
+    //   await setFan(postData);
+    // }
+    // if (title === "Pump" && isAutoMode) {
+    //   setIsOn(false)
+    //   setToggle("OFF");
+    //   const postData = { value: "0" };
+    //   await setPump(postData);
+    // }
   };
 
   const getInitialDevice = async () => {
@@ -134,12 +136,13 @@ const ToggleButton = ({
           setIsOn(false);
         }
       });
-      // const { data } = await getFan();
+      const { data } = await getFan();
       if (isAutoMode) {
         setToggle("OFF");
         setIsOn(false);
       } else {
-        const value = initialStateFan;
+        // const value = initialStateFan;
+        const value = data.value;
         if (value === "0") {
           setToggle("OFF");
           setIsOn(false);
@@ -160,12 +163,13 @@ const ToggleButton = ({
           setIsOn(false);
         }
       });
-      // const { data } = await getPump();
+      const { data } = await getPump();
       if (isAutoMode) {
         setToggle("OFF");
         setIsOn(false);
       } else {
-        const value = initialStatePump;
+        // const value = initialStatePump;
+        const value = data.value;
         if (value === "0") {
           setToggle("OFF");
           setIsOn(false);
@@ -186,8 +190,9 @@ const ToggleButton = ({
           setIsOn(false);
         }
       });
-      // const { data } = await getMode();
-      const value = initialStateMode;
+      const { data } = await getMode();
+      // const value = initialStateMode;
+      const value = data.value;
       if (value === "0") {
         setToggle("OFF");
         setIsOn(false);
@@ -208,8 +213,8 @@ const ToggleButton = ({
           setIsOn(false);
         }
       });
-      // const { data } = await getLed();
-      const value = initialStateLed;
+      const { data } = await getLed();
+      const value = data.value;
       if (value === "0") {
         setToggle("OFF");
         setIsOn(false);
@@ -236,12 +241,12 @@ const ToggleButton = ({
         width="30px"
         mr="20px"
         fontWeight={700}
-        fontSize={22}
+        fontSize="2.2rem"
         textTransform="uppercase"
       >
         {toggle === "" ? <CircularProgress sx={{ color: "#fff" }} /> : toggle}
       </Typography>
-      <div>
+      <div className={styles.containerButton}>
         <label className={styles.switch}>
           <input
             checked={isOn}

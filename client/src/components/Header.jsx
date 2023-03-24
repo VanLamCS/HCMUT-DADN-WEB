@@ -7,6 +7,7 @@ const Header = ({ title, subtitle }) => {
   return (
     <Box mb="30px">
       <Typography
+        fontSize="2rem"
         variant="h2"
         color={colors.grey[100]}
         fontWeight="bold"
@@ -14,7 +15,7 @@ const Header = ({ title, subtitle }) => {
       >
         {title}
       </Typography>
-      <Typography variant="h5" color={colors.greenAccent[400]}>
+      <Typography mt="10px" fontSize="1rem" variant="h5" color={colors.greenAccent[400]}>
         {subtitle}
       </Typography>
     </Box>

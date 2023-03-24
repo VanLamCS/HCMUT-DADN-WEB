@@ -6,14 +6,14 @@ import PercentIcon from "@mui/icons-material/Percent";
 import Header from "../../components/Header";
 import LineChart from "../../components/LineChart";
 import StatBox from "../../components/StatBox";
-import ProgressCircle from "../../components/ProgressCircle";
 import { useMediaQuery } from "@mui/material";
 import { useState, useEffect } from "react";
 import { io } from "socket.io-client";
 import { getHumidity, getSoildMoisture, getTemperature } from "../../api";
 import { useNavigate } from "react-router-dom";
 import { setDataCharts } from "../../features/dataChart";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { getDataNotification } from "../../features/notification";
 
 const socket = io("http://localhost:8000"); // Replace with your server's URL
 
@@ -24,6 +24,7 @@ const Home = () => {
   const [humidity, setHumidity] = useState(0);
   const [soildMoisture, setSoildMoisture] = useState(0);
   const user = localStorage.getItem("user");
+  const dispatch = useDispatch();
   const dataNotifications = useSelector(
     (state) => state.dataNotifications.message
   );
@@ -36,23 +37,7 @@ const Home = () => {
 
   const homeMoisure = useSelector((state) => state.informationHome.moisture);
 
-  var updatedData = [];
-
-  if (Object.keys(dataNotifications).length !== 0) {
-    updatedData = dataNotifications.map((obj) => {
-      const dateObj = new Date(obj.createdAt);
-      const year = dateObj.getFullYear();
-      const month = ("0" + (dateObj.getMonth() + 1)).slice(-2);
-      const day = ("0" + dateObj.getDate()).slice(-2);
-      const hours = ("0" + dateObj.getHours()).slice(-2);
-      const minutes = ("0" + dateObj.getMinutes()).slice(-2);
-      const seconds = ("0" + dateObj.getSeconds()).slice(-2);
-      return {
-        ...obj,
-        createdAt: `${month}/${day}/${year} ${hours}:${minutes}:${seconds}`,
-      };
-    });
-  }
+  const [renderNotification, setRenderNotification] = useState([]);
 
   const fetchData = async () => {
     if (homeTemperature !== -1 && homeHumidity !== -1 && homeMoisure !== -1) {
@@ -129,14 +114,48 @@ const Home = () => {
       socket.on("soildMoistureUpdate", ({ soildMoisture }) => {
         setSoildMoisture(soildMoisture);
       });
-
-      socket.on("newNotification", (data) => {
-        console.log("check json: ", JSON.stringify(data))
-        // updatedData.unshift(data);
-      });
-
     }
   }, [homeTemperature, homeHumidity, homeMoisure]);
+
+  useEffect(() => {
+    var updatedData = [];
+
+    if (Object.keys(dataNotifications).length !== 0) {
+      updatedData = dataNotifications.map((obj) => {
+        const dateObj = new Date(obj.createdAt);
+        const year = dateObj.getFullYear();
+        const month = ("0" + (dateObj.getMonth() + 1)).slice(-2);
+        const day = ("0" + dateObj.getDate()).slice(-2);
+        const hours = ("0" + dateObj.getHours()).slice(-2);
+        const minutes = ("0" + dateObj.getMinutes()).slice(-2);
+        const seconds = ("0" + dateObj.getSeconds()).slice(-2);
+        return {
+          ...obj,
+          createdAt: `${month}/${day}/${year} ${hours}:${minutes}:${seconds}`,
+        };
+      });
+    }
+    setRenderNotification(updatedData);
+
+    socket.on("newNotification", (data) => {
+      console.log("check json: ", JSON.stringify(data));
+      const dateObj = new Date(data.createdAt);
+      const year = dateObj.getFullYear();
+      const month = ("0" + (dateObj.getMonth() + 1)).slice(-2);
+      const day = ("0" + dateObj.getDate()).slice(-2);
+      const hours = ("0" + dateObj.getHours()).slice(-2);
+      const minutes = ("0" + dateObj.getMinutes()).slice(-2);
+      const seconds = ("0" + dateObj.getSeconds()).slice(-2);
+
+      const newData = {
+        content: data.message,
+        createdAt: `${month}/${day}/${year} ${hours}:${minutes}:${seconds}`,
+      };
+
+      const updatedNotifications = [newData, ...updatedData];
+      setRenderNotification(updatedNotifications);
+    });
+  }, [dataNotifications]);
 
   return (
     <Box m="20px">
@@ -175,7 +194,7 @@ const Home = () => {
               <ThermostatIcon
                 sx={{
                   color: colors.greenAccent[600],
-                  fontSize: "26px",
+                  fontSize: "36px",
                 }}
               />
             }
@@ -197,7 +216,7 @@ const Home = () => {
               <PercentIcon
                 sx={{
                   color: colors.greenAccent[600],
-                  fontSize: "26px",
+                  fontSize: "36px",
                 }}
               />
             }
@@ -219,7 +238,7 @@ const Home = () => {
               <PercentIcon
                 sx={{
                   color: colors.greenAccent[600],
-                  fontSize: "26px",
+                  fontSize: "36px",
                 }}
               />
             }
@@ -228,9 +247,12 @@ const Home = () => {
 
         {/* ROW 2 */}
         <Box
-          gridColumn="span 8"
-          gridRow="span 2"
+          gridColumn="span 12"
+          gridRow="span 3"
           backgroundColor={colors.primary[400]}
+          display="flex"
+          flexDirection="column"
+          justifyContent="space-around"
         >
           <Box
             mt="25px"
@@ -248,6 +270,8 @@ const Home = () => {
                 Last 24 hours
               </Typography>
               <Typography
+                p="10px 0"
+                fontSize="1.5rem"
                 variant="h3"
                 fontWeight="bold"
                 color={colors.greenAccent[500]}
@@ -259,7 +283,7 @@ const Home = () => {
               <IconButton>
                 <DownloadOutlinedIcon
                   sx={{
-                    fontSize: "26px",
+                    fontSize: "36px",
                     color: colors.greenAccent[500],
                   }}
                 />
@@ -274,8 +298,9 @@ const Home = () => {
             <LineChart />
           </Box>
         </Box>
+        {/* ROW 3 */}
         <Box
-          gridColumn="span 4"
+          gridColumn="span 6"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
           overflow="auto"
@@ -288,10 +313,15 @@ const Home = () => {
             colors={colors.grey[100]}
             p="15px"
           >
-            <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
+            <Typography
+              width="100%"
+              color={colors.grey[100]}
+              variant="h5"
+              fontWeight="600"
+            >
               Notification
-              {Object.keys(updatedData).length !== 0 &&
-                updatedData.slice(0, 5).map((notification, i) => (
+              {Object.keys(renderNotification).length !== 0 &&
+                renderNotification.slice(0, 5).map((notification, i) => (
                   <Box
                     key={notification._id}
                     display="flex"
@@ -299,7 +329,6 @@ const Home = () => {
                     alignItems="center"
                     borderBottom={`4px solid ${colors.primary[500]}`}
                     p="15px"
-                    width="100%"
                   >
                     <Box>
                       <Typography mr="15px" color={colors.grey[100]}>
@@ -311,6 +340,9 @@ const Home = () => {
                       backgroundColor={colors.greenAccent[500]}
                       p="5px 10px"
                       borderRadius="4px"
+                      minWidth="220px"
+                      textAlign="center"
+
                     >
                       {notification.content}
                     </Box>
@@ -320,9 +352,8 @@ const Home = () => {
           </Box>
         </Box>
 
-        {/* ROW 3 */}
         <Box
-          gridColumn="span 4"
+          gridColumn="span 6"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
           p="30px"
@@ -330,22 +361,6 @@ const Home = () => {
           <Typography variant="h5" fontWeight="600">
             Campaign
           </Typography>
-          <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            mt="25px"
-          >
-            <ProgressCircle size="125" />
-            <Typography
-              variant="h5"
-              color={colors.greenAccent[500]}
-              sx={{ mt: "15px" }}
-            >
-              $48,352 revenue generated
-            </Typography>
-            <Typography>Includes extra misc expenditures and costs</Typography>
-          </Box>
         </Box>
       </Box>
     </Box>
