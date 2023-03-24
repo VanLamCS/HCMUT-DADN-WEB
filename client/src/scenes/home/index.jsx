@@ -9,11 +9,7 @@ import StatBox from "../../components/StatBox";
 import { useMediaQuery } from "@mui/material";
 import { useState, useEffect } from "react";
 import { io } from "socket.io-client";
-import { getHumidity, getSoildMoisture, getTemperature } from "../../api";
-import { useNavigate } from "react-router-dom";
-import { setDataCharts } from "../../features/dataChart";
 import { useSelector, useDispatch } from "react-redux";
-import { getDataNotification } from "../../features/notification";
 
 const socket = io("http://localhost:8000"); // Replace with your server's URL
 
@@ -102,59 +98,11 @@ const Home = () => {
   useEffect(() => {
     if (user) {
       fetchData();
-
-      socket.on("temperatureUpdate", ({ temperature }) => {
-        setTemperature(temperature);
-      });
-
-      socket.on("humidityUpdate", ({ humidity }) => {
-        setHumidity(humidity);
-      });
-
-      socket.on("soildMoistureUpdate", ({ soildMoisture }) => {
-        setSoildMoisture(soildMoisture);
-      });
     }
   }, [homeTemperature, homeHumidity, homeMoisure]);
 
   useEffect(() => {
-    var updatedData = [];
-
-    if (Object.keys(dataNotifications).length !== 0) {
-      updatedData = dataNotifications.map((obj) => {
-        const dateObj = new Date(obj.createdAt);
-        const year = dateObj.getFullYear();
-        const month = ("0" + (dateObj.getMonth() + 1)).slice(-2);
-        const day = ("0" + dateObj.getDate()).slice(-2);
-        const hours = ("0" + dateObj.getHours()).slice(-2);
-        const minutes = ("0" + dateObj.getMinutes()).slice(-2);
-        const seconds = ("0" + dateObj.getSeconds()).slice(-2);
-        return {
-          ...obj,
-          createdAt: `${month}/${day}/${year} ${hours}:${minutes}:${seconds}`,
-        };
-      });
-    }
-    setRenderNotification(updatedData);
-
-    socket.on("newNotification", (data) => {
-      console.log("check json: ", JSON.stringify(data));
-      const dateObj = new Date(data.createdAt);
-      const year = dateObj.getFullYear();
-      const month = ("0" + (dateObj.getMonth() + 1)).slice(-2);
-      const day = ("0" + dateObj.getDate()).slice(-2);
-      const hours = ("0" + dateObj.getHours()).slice(-2);
-      const minutes = ("0" + dateObj.getMinutes()).slice(-2);
-      const seconds = ("0" + dateObj.getSeconds()).slice(-2);
-
-      const newData = {
-        content: data.message,
-        createdAt: `${month}/${day}/${year} ${hours}:${minutes}:${seconds}`,
-      };
-
-      const updatedNotifications = [newData, ...updatedData];
-      setRenderNotification(updatedNotifications);
-    });
+    setRenderNotification(dataNotifications)
   }, [dataNotifications]);
 
   return (
@@ -319,7 +267,8 @@ const Home = () => {
               variant="h5"
               fontWeight="600"
             >
-              Notification
+              <Typography variant="h3" color="#4cceac">Notification</Typography>
+              
               {Object.keys(renderNotification).length !== 0 &&
                 renderNotification.slice(0, 5).map((notification, i) => (
                   <Box
