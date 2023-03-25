@@ -102,7 +102,7 @@ const Home = () => {
   }, [homeTemperature, homeHumidity, homeMoisure]);
 
   useEffect(() => {
-    setRenderNotification(dataNotifications)
+    setRenderNotification(dataNotifications);
   }, [dataNotifications]);
 
   return (
@@ -267,8 +267,10 @@ const Home = () => {
               variant="h5"
               fontWeight="600"
             >
-              <Typography variant="h3" color="#4cceac">Notification</Typography>
-              
+              <Typography variant="h3" color="#4cceac">
+                Notification
+              </Typography>
+
               {Object.keys(renderNotification).length !== 0 &&
                 renderNotification.slice(0, 5).map((notification, i) => (
                   <Box
@@ -291,7 +293,6 @@ const Home = () => {
                       borderRadius="4px"
                       minWidth="220px"
                       textAlign="center"
-
                     >
                       {notification.content}
                     </Box>
@@ -308,7 +309,7 @@ const Home = () => {
           p="30px"
         >
           <Typography variant="h5" fontWeight="600">
-            Campaign
+            Something feature
           </Typography>
         </Box>
       </Box>
