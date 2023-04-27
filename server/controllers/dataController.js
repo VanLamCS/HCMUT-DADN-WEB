@@ -532,3 +532,49 @@ export const getDaySoildMoistures = async (req, res, next) => {
             return next(new Error(error.message));
         });
 };
+
+export const setSoildMoistureRange = async (req, res, next) => {
+    let { high, low } = req.body;
+    if (!high && !low && high != 0 && low != 0) {
+        res.status(400);
+        return next(new Error("Value is not sent!"));
+    } else {
+        if (high !== 0) {
+            high = high ? parseInt(high) : null;
+        }
+        if (low !== 0) {
+            low = low ? parseInt(low) : null;
+        }
+        if (high !== null && (high < 0 || high > 100)) {
+            res.status(400);
+            return next(new Error("High value is not valid"));
+        }
+        if (low !== null && (low < 0 || low > 100)) {
+            res.status(400);
+            return next(new Error("Low value is not valid"));
+        }
+        if (high !== null && low !== null && high < low) {
+            res.status(400);
+            return next(
+                new Error("High value must not be lower than low value")
+            );
+        }
+        if (high !== null) {
+            publishData("soild-moisture-high-range", high, (result) => {
+                if (!result) {
+                    res.status(400);
+                    return next(new Error("Set high value failed"));
+                }
+            });
+        }
+        if (low !== null) {
+            publishData("soild-moisture-low-range", low, (result) => {
+                if (!result) {
+                    res.status(400);
+                    return next(new Error("Set low value failed"));
+                }
+            });
+        }
+        res.status(200).json({ message: "successful" });
+    }
+};

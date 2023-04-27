@@ -27,5 +27,10 @@ router.post("/setfan", verifyToken, dataController.setFan);
 router.post("/setmode", verifyToken, dataController.setMode);
 router.post("/setlight", verifyToken, dataController.setLight);
 router.post("/setpump", verifyToken, dataController.setPump);
+router.post(
+    "/soild-moisture-range",
+    verifyToken,
+    dataController.setSoildMoistureRange
+);
 
 export default router;

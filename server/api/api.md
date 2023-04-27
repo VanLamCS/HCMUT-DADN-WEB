@@ -38,6 +38,8 @@
 
 -   [ Set Light Data API ](#set-light-data-api)
 
+-   [Set Soild-Moisture Range API](#set-soild-moisture-range-api)
+
 And some socket messages below:
 
 -   `temperatureUpdate`,
@@ -1328,5 +1330,86 @@ This endpoint is used to set light status.
 {
     HTTP/1.1 400 Bad Request
     "message": "Value is invalid"
+}
+```
+
+# Set Soild-Moisture Range API
+
+This endpoint is used to set range of soild-moisture.
+
+## Request
+
+`POST api/data/soild-moisture-range`
+
+### Request Header
+
+| Header        | Description                               |
+| ------------- | ----------------------------------------- |
+| Content-Type  | Required. Set to `application/json`.      |
+| Authorization | Required. Set to `Bearer <access token>`. |
+
+### Request Body
+
+| Property | Type    | Description          |
+| -------- | ------- | -------------------- |
+| `high`   | integer | Optional. High value |
+| `low`    | integer | Optional. Low value  |
+
+### Example
+
+```json
+{
+    "high": 90,
+    "low": 20
+}
+```
+
+## Response
+
+### Successful Response
+
+#### HTTP Status Code
+
+| Status Code | Description |
+| ----------- | ----------- |
+| 200         | Successful. |
+
+#### Response Body
+
+| Property | Data type | Description     |
+| -------- | --------- | --------------- |
+| message  | string    | Just a message. |
+
+#### Example
+
+```json
+{
+    HTTP/1.1 200 OK
+    "message": "successful"
+}
+```
+
+### Response Failed
+
+#### HTTP Status Code
+
+| Status Code | Description                                  |
+| ----------- | -------------------------------------------- |
+| 400         | Bad Request. The error message will be sent. |
+| 401         | Unauthorized. Not logged in.                 |
+| 403         | Forbidden.                                   |
+
+#### Response Body
+
+| Property | Data type | Description    |
+| -------- | --------- | -------------- |
+| message  | string    | Error message. |
+
+#### Example
+
+```json
+{
+    HTTP/1.1 400 Bad Request
+    "message": "High value must not be lower than low value"
 }
 ```
