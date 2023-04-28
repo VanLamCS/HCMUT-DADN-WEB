@@ -38,11 +38,20 @@ const realtimeUpdate = (io) => {
         // Subscribe to the light feed
         client.subscribe(`${username}/feeds/light`);
         // console.log("Subscribe light feed");
+
+        // Subscribe to the crops status feed
+        client.subscribe(`${username}/feeds/person`);
+        // console.log("Subscribe crops status feed");
     });
 
     client.on("message", (topic, message) => {
         // Parse the message data as a float
-        const data = parseFloat(message.toString());
+        let data = null;
+        if (!topic.endsWith("person")) {
+            data = parseFloat(message.toString());
+        } else {
+            data = message.toString();
+        }
 
         if (topic.endsWith("temperature")) {
             // Emit a "temperatureUpdate" event with the new temperature data
@@ -72,6 +81,15 @@ const realtimeUpdate = (io) => {
             // Emit a "lightUpdate" event with the new light data
             io.emit("lightUpdate", { light: data });
             console.log(`Light: ${data}`);
+        } else if (topic.endsWith("person")) {
+            if (!(data === "None" || data === "none")) {
+                const current = new Date();
+                io.emit("plantsStatusUpdate", {
+                    value: data,
+                    time: current,
+                });
+                console.log(`${data}`);
+            }
         }
     });
 };

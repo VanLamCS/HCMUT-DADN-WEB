@@ -586,6 +586,34 @@ export const getDaySoildMoistures = async (req, res, next) => {
         });
 };
 
+export const getPlantsStatus = async (req, res, next) => {
+    let limit = req.query["limit"];
+    limit = limit ? (parseInt(limit) > 0 ? parseInt(limit) : 10) : 10;
+    adaRequest
+        .get(`/feeds/person/data`, {
+            params: {
+                limit: limit,
+            },
+        })
+        .then((data) => {
+            let newData = data.data.filter(({ value }) => {
+                if (!(value === "None" || value === "none")) {
+                    return true;
+                }
+                return false;
+            });
+            newData = newData.map(({ value, created_at }) => ({
+                value,
+                time: created_at,
+            }));
+            res.status(200).json({ message: "successful", data: newData });
+        })
+        .catch((error) => {
+            res.status(400);
+            return next(new Error("Query plants status failed"));
+        });
+};
+
 export const setSoildMoistureRange = async (req, res, next) => {
     let { high, low } = req.body;
     if (!high && !low && high != 0 && low != 0) {

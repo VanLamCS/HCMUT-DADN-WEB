@@ -37,6 +37,7 @@ router.get(
     verifyToken,
     dataController.getDaySoildMoistures
 );
+router.get("/plants-status", verifyToken, dataController.getPlantsStatus);
 
 router.post("/setfan", verifyToken, dataController.setFan);
 router.post("/setmode", verifyToken, dataController.setMode);
