@@ -115,6 +115,59 @@ export const lastPump = async (req, res, next) => {
         });
 };
 
+export const lastHighSoidMoisture = async (req, res, next) => {
+    adaRequest
+        .get("/feeds/humidity-range/data/last")
+        .then(({ data }) => {
+            res.status(200).json({
+                ...data,
+                feed_key: "soild-moisture-high-range",
+                message: "successful",
+            });
+        })
+        .catch((error) => {
+            res.status(400);
+            return next(new Error(error.message));
+        });
+};
+
+export const lastLowSoidMoisture = async (req, res, next) => {
+    adaRequest
+        .get("/feeds/soild-moisture-range/data/last")
+        .then(({ data }) => {
+            res.status(200).json({
+                ...data,
+                feed_key: "soild-moisture-low-range",
+                message: "successful",
+            });
+        })
+        .catch((error) => {
+            res.status(400);
+            return next(new Error(error.message));
+        });
+};
+
+export const lastSoildMoistureRange = async (req, res, next) => {
+    let low = null;
+    let high = null;
+    try {
+        const highReq = await adaRequest.get("/feeds/humidity-range/data/last");
+        const lowReq = await adaRequest.get(
+            "/feeds/soild-moisture-range/data/last"
+        );
+        high = parseInt(highReq.data.value);
+        low = parseInt(lowReq.data.value);
+        res.status(200).json({
+            message: "successful",
+            high: high,
+            low: low,
+        });
+    } catch (error) {
+        res.status(400);
+        return next(new Error(error.message));
+    }
+};
+
 const handleReturn = async (result, res, next) => {
     if (result) {
         res.status(201).json({
