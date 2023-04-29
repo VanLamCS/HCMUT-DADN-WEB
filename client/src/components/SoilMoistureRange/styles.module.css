@@ -1,0 +1,16 @@
+.container {
+    background-color: #1f2a40;
+    border-radius: 14px;
+    margin-right: 20px;
+    margin-left: 20px;
+    margin-bottom: 30px;
+    padding: 15px 20px;
+    height: 280px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+icon {
+    transition: all 2s ease;
+}

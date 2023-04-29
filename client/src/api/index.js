@@ -42,4 +42,18 @@ export const get24SolidTemperatures = () => API.get("api/data/daytemperatures");
 
 export const get24SolidHumidities = () => API.get("api/data/dayhumidities");
 
-export const getNotification = () => API.get('api/data/notifications')
+export const getNotification = () => API.get("api/data/notifications");
+
+export const getHightSolidMoisture = () =>
+  API.get("api/data/high-soild-moisture");
+
+export const getLowSolidMoisture = () => API.get("api/data/low-soild-moisture");
+
+export const getRangeSolidMoisture = () =>
+  API.get("api/data/soild-moisture-range");
+
+export const postRangeSolidMoisture = (data) => 
+  API.post("api/data/soild-moisture-range", (data));
+
+export const getPlantStatus = (limit = 10) => 
+  API.get(`http://localhost:5000/api/data/plants-status?limit=${limit}`)

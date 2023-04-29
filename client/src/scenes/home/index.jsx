@@ -16,14 +16,25 @@ const socket = io("http://localhost:8000"); // Replace with your server's URL
 const Home = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const isMobile = useMediaQuery("(max-width: 600px)");
+
   const [temperature, setTemperature] = useState(0);
   const [humidity, setHumidity] = useState(0);
   const [soildMoisture, setSoildMoisture] = useState(0);
+  const [renderTemperature, setRenderTemperature] = useState(0);
+  const [renderHumidity, setRenderHumidity] = useState(0);
+  const [renderSoildMoisture, setRenderSoildMoisture] = useState(0);
+  const [renderNotification, setRenderNotification] = useState([]);
+  const [renderPlantStatus, setRenderPlantStatus] = useState([]);
+
   const user = localStorage.getItem("user");
   const dispatch = useDispatch();
+
   const dataNotifications = useSelector(
     (state) => state.dataNotifications.message
   );
+
+  const dataPlantStatus = useSelector((state) => state.dataPlantStatus.message);
 
   const homeTemperature = useSelector(
     (state) => state.informationHome.temperature
@@ -33,8 +44,6 @@ const Home = () => {
 
   const homeMoisure = useSelector((state) => state.informationHome.moisture);
 
-  const [renderNotification, setRenderNotification] = useState([]);
-
   const fetchData = async () => {
     if (homeTemperature !== -1 && homeHumidity !== -1 && homeMoisure !== -1) {
       setTemperature(homeTemperature);
@@ -42,13 +51,6 @@ const Home = () => {
       setSoildMoisture(homeMoisure);
     }
   };
-
-  const isTablet = useMediaQuery("(max-width: 1024px)");
-  const isMobile = useMediaQuery("(max-width: 600px)");
-
-  const [renderTemperature, setRenderTemperature] = useState(0);
-  const [renderHumidity, setRenderHumidity] = useState(0);
-  const [renderSoildMoisture, setRenderSoildMoisture] = useState(0);
 
   useEffect(() => {
     if (
@@ -104,6 +106,10 @@ const Home = () => {
   useEffect(() => {
     setRenderNotification(dataNotifications);
   }, [dataNotifications]);
+
+  useEffect(() => {
+    setRenderPlantStatus(dataPlantStatus);
+  }, [dataPlantStatus]);
 
   return (
     <Box m="20px">
@@ -301,16 +307,58 @@ const Home = () => {
             </Typography>
           </Box>
         </Box>
-
         <Box
           gridColumn="span 6"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
-          p="30px"
+          overflow="auto"
         >
-          <Typography variant="h5" fontWeight="600">
-            Something feature
-          </Typography>
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            borderBottom={`4px solid ${colors.primary[500]}`}
+            colors={colors.grey[100]}
+            p="15px"
+          >
+            <Typography
+              width="100%"
+              color={colors.grey[100]}
+              variant="h5"
+              fontWeight="600"
+            >
+              <Typography variant="h3" color="#4cceac">
+                Plant Status
+              </Typography>
+
+              {Object.keys(renderPlantStatus).length !== 0 &&
+                renderPlantStatus.slice(0, 5).map((plantStatus, index) => (
+                  <Box
+                    key={index}
+                    display="flex"
+                    justifyContent="space-between"
+                    alignItems="center"
+                    borderBottom={`4px solid ${colors.primary[500]}`}
+                    p="15px"
+                  >
+                    <Box>
+                      <Typography mr="15px" color={colors.grey[100]}>
+                        {plantStatus.time}
+                      </Typography>
+                    </Box>
+                    <Box
+                      backgroundColor={colors.greenAccent[500]}
+                      p="5px 10px"
+                      borderRadius="4px"
+                      minWidth="220px"
+                      textAlign="center"
+                    >
+                      {plantStatus.value}
+                    </Box>
+                  </Box>
+                ))}
+            </Typography>
+          </Box>
         </Box>
       </Box>
     </Box>

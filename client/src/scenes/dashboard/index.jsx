@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Header from "../../components/Header";
 import ToggleDashBoard from "../../components/ToggleDashBoard";
 import { io } from "socket.io-client";
+import SoilMoistureRange from "../../components/SoilMoistureRange";
 
 const socket = io("http://localhost:8000"); 
 
@@ -35,6 +36,7 @@ const DashBoard = () => {
           <ToggleDashBoard isAutoMode={isAutoMode} setIsAutoMode={setIsAutoMode} title="Led" />
         </Grid>
       </Grid>
+      <SoilMoistureRange/>
     </Box>
   );
 };

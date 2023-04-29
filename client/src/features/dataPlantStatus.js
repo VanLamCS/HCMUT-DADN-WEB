@@ -4,17 +4,17 @@ const initialState = {
   message: []
 };
 
-export const notification = createSlice({
-  name: "notification",
+export const plantStatus = createSlice({
+  name: "plantStatus",
   initialState,
   reducers: {
-    getDataNotification: (state, action) => {
+    dispatchPlantStatus: (state, action) => {
       state.message = action.payload;
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { getDataNotification } = notification.actions;
+export const { dispatchPlantStatus } = plantStatus.actions;
 
-export default notification.reducer;
+export default plantStatus.reducer;

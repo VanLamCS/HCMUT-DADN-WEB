@@ -20,6 +20,7 @@ import {
   getLed,
   getMode,
   getNotification,
+  getPlantStatus,
   getPump,
   getSoildMoisture,
   getTemperature,
@@ -30,6 +31,7 @@ import { getDataNotification } from "./features/notification";
 import { getDeviceStatus } from "./features/dataDashboard";
 import { getInformationHome } from "./features/dataHome";
 import { io } from "socket.io-client";
+import { dispatchPlantStatus } from "./features/dataPlantStatus";
 const socket = io("http://localhost:8000"); // Replace with your server's URL
 
 function App() {
@@ -83,6 +85,7 @@ function App() {
       );
     });
 
+    //get Notifications
     const resNotifycation = await getNotification();
 
     const dataNotifications = resNotifycation.data.data;
@@ -124,6 +127,49 @@ function App() {
 
       const updatedNotifications = [newData, ...updatedData];
       dispatch(getDataNotification(updatedNotifications));
+    });
+
+    //get Plant Status
+    const resPlantStatus = await getPlantStatus();
+
+    const dataPlantStatus = resPlantStatus.data.data;
+
+    var updatedDataPlantStatus = [];
+
+    if (Object.keys(dataPlantStatus).length !== 0) {
+      updatedDataPlantStatus = dataPlantStatus.map((obj) => {
+        const dateObj = new Date(obj.time);
+        const year = dateObj.getFullYear();
+        const month = ("0" + (dateObj.getMonth() + 1)).slice(-2);
+        const day = ("0" + dateObj.getDate()).slice(-2);
+        const hours = ("0" + dateObj.getHours()).slice(-2);
+        const minutes = ("0" + dateObj.getMinutes()).slice(-2);
+        const seconds = ("0" + dateObj.getSeconds()).slice(-2);
+        return {
+          ...obj,
+          time: `${month}/${day}/${year} ${hours}:${minutes}:${seconds}`,
+        };
+      });
+    }
+
+    dispatch(dispatchPlantStatus(updatedDataPlantStatus));
+
+    socket.on("plantsStatusUpdate", ({ value, time }) => {
+      const dateObj = new Date(time);
+      const year = dateObj.getFullYear();
+      const month = ("0" + (dateObj.getMonth() + 1)).slice(-2);
+      const day = ("0" + dateObj.getDate()).slice(-2);
+      const hours = ("0" + dateObj.getHours()).slice(-2);
+      const minutes = ("0" + dateObj.getMinutes()).slice(-2);
+      const seconds = ("0" + dateObj.getSeconds()).slice(-2);
+
+      const newData = {
+        value,
+        time: `${month}/${day}/${year} ${hours}:${minutes}:${seconds}`,
+      };
+
+      const updatedDataPlantStatus = [newData, ...updatedData];
+      dispatch(dispatchPlantStatus(updatedDataPlantStatus));
     });
 
     const resMoisures = await get24SolidMoistures();

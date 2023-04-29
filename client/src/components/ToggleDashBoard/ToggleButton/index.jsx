@@ -10,7 +10,7 @@ import {
   setLight,
   setMode,
   setPump,
-} from "../../api";
+} from "../../../api";
 import { CircularProgress } from "@mui/material";
 import { io } from "socket.io-client";
 import { useSelector } from "react-redux";
@@ -110,19 +110,6 @@ const ToggleButton = ({
     } else if (isAutoMode && title === "Pump") {
       setDisable(true);
     }
-
-    // if (title === "Fan" && isAutoMode) {
-    //   setToggle("OFF");
-    //   setIsOn(false)
-    //   const postData = { value: "0" };
-    //   await setFan(postData);
-    // }
-    // if (title === "Pump" && isAutoMode) {
-    //   setIsOn(false)
-    //   setToggle("OFF");
-    //   const postData = { value: "0" };
-    //   await setPump(postData);
-    // }
   };
 
   const getInitialDevice = async () => {

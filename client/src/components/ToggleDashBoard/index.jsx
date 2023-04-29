@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import styles from "./style.module.css";
 import { Typography, Stack, Box } from "@mui/material";
-import ToggleButton from "../ToggleButton";
 import CribIcon from "@mui/icons-material/Crib";
 import ChildFriendlyIcon from "@mui/icons-material/ChildFriendly";
 import SanitizerIcon from "@mui/icons-material/Sanitizer";
 import ModelTrainingIcon from "@mui/icons-material/ModelTraining";
 import WbIncandescentIcon from "@mui/icons-material/WbIncandescent";
+import ToggleButton from "./ToggleButton";
 
 const ToggleDashBoard = ({ title, isAutoMode, setIsAutoMode }) => {
   const [toggle, setToggle] = useState("");
@@ -64,7 +64,6 @@ const ToggleDashBoard = ({ title, isAutoMode, setIsAutoMode }) => {
         m="40px 30px 0 30px"
       >
         <Typography
-          // width="130px"
           height="30px"
           fontWeight={700}
           fontSize="1.4rem"
