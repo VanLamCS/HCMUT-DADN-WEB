@@ -152,7 +152,6 @@ const SoilMoistureRange = () => {
   }, []);
 
   const handleChange = async (event, newValue) => {
-    console.log("check newValue: ", newValue);
     setRange({ ...range, high: newValue[1], low: newValue[0] });
     const data = { high: newValue[1], low: newValue[0] };
     const res = await postRangeSolidMoisture(data);

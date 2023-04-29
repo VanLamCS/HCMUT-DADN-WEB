@@ -13,15 +13,17 @@ import {
   get24SolidTemperatures,
 } from "../../api";
 import { setDataCharts } from "../../features/dataChart";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 const Line = ({ whatRender }) => {
   const [value, setValue] = React.useState(dayjs());
+  const [reload, setReload] = React.useState(false);
   const dispatch = useDispatch();
+  const dataDayChart = useSelector((state) => state.dataDayChart);
 
-  useEffect(() => {
-    console.log("check day: ", value.toISOString());
-    const fetchData = async () => {
+  const fetchData = async () => {
+    try {
       if (whatRender === "Moisures") {
         const resMoisures = await get24SolidMoistures(value.toISOString());
         const tempMoisures = resMoisures.data.data;
@@ -37,7 +39,8 @@ const Line = ({ whatRender }) => {
         };
         dispatch(
           setDataCharts({
-            dataDayHumidities: dataChartMoisures,
+            ...dataDayChart,
+            dataDayMoisures: dataChartMoisures,
           })
         );
       } else if (whatRender === "Temperatures") {
@@ -57,7 +60,8 @@ const Line = ({ whatRender }) => {
         };
         dispatch(
           setDataCharts({
-            dataDayTemperatures: dataChartTemperatures
+            ...dataDayChart,
+            dataDayTemperatures: dataChartTemperatures,
           })
         );
       } else if (whatRender === "Humidities") {
@@ -75,11 +79,18 @@ const Line = ({ whatRender }) => {
         };
         dispatch(
           setDataCharts({
+            ...dataDayChart,
             dataDayHumidities: dataChartHumidities,
           })
         );
       }
-    };
+    } catch (error) {
+      toast.error("Error data at this time");
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
   }, [value]);
 
   return (
@@ -100,7 +111,12 @@ const Line = ({ whatRender }) => {
         </LocalizationProvider>
       </Box>
       <Box height="75vh">
-        <LineChart whatRender={whatRender} />
+        <LineChart
+          whatRender={whatRender}
+          reload={reload}
+          setReload={setReload}
+          value={value}
+        />
       </Box>
     </Box>
   );

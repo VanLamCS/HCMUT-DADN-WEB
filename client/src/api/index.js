@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import axios from "axios";
 
 const API = axios.create({ baseURL: "http://localhost:5000" });
@@ -36,17 +37,17 @@ export const getPump = () => API.get("api/data/lastpump");
 
 export const getLed = () => API.get("api/data/lastlight");
 
-export const get24SolidMoistures = (date = new Date().toISOString()) => {
+export const get24SolidMoistures = (date = dayjs().toISOString()) => {
   const apiUrl = `api/data/daysoildmoistures?date=${date}`;
   return API.get(apiUrl);
 };
 
-export const get24SolidTemperatures = (date = new Date().toISOString()) => {
+export const get24SolidTemperatures = (date = dayjs().toISOString()) => {
   const apiUrl = `api/data/daytemperatures?date=${date}`;
   return API.get(apiUrl);
 };
 
-export const get24SolidHumidities = (date = new Date().toISOString()) => {
+export const get24SolidHumidities = (date = dayjs().toISOString()) => {
   const apiUrl = `api/data/dayhumidities?date=${date}`;
   return API.get(apiUrl);
 };

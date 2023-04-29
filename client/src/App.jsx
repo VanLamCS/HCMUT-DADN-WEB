@@ -110,7 +110,7 @@ function App() {
 
     dispatch(getDataNotification(updatedData));
 
-    socket.on("newNotification", (data) => {;
+    socket.on("newNotification", (data) => {
       const dateObj = new Date(data.createdAt);
       const year = dateObj.getFullYear();
       const month = ("0" + (dateObj.getMonth() + 1)).slice(-2);
@@ -171,23 +171,10 @@ function App() {
       dispatch(dispatchPlantStatus(updatedDataPlantStatus));
     });
 
+    //Line chart
     const resMoisures = await get24SolidMoistures();
     const resHumidities = await get24SolidHumidities();
     const resTemperatures = await get24SolidTemperatures();
-
-    // const resFanStatus = await getFan();
-    // const resPumpStatus = await getPump();
-    // const resLedStatus = await getLed();
-    // const resModeStatus = await getMode();
-
-    // dispatch(
-    //   getDeviceStatus({
-    //     pumpStatus: resPumpStatus.data.value,
-    //     fanStatus: resFanStatus.data.value,
-    //     ledStatus: resLedStatus.data.value,
-    //     modeStatus: resModeStatus.data.value,
-    //   })
-    // );
 
     const tempMoisures = resMoisures.data.data;
     const tempHumidities = resHumidities.data.data;

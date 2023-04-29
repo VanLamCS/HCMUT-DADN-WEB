@@ -16,7 +16,6 @@ export const deviceStatus = createSlice({
   initialState,
   reducers: {
     getDeviceStatus: (state, action) => {
-      console.log("check payload: ", action.payload)
       state.pumpStatus = action.payload.pumpStatus
       state.fanStatus = action.payload.fanStatus
       state.ledStatus = action.payload.ledStatus

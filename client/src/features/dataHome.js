@@ -15,7 +15,6 @@ export const informationHome = createSlice({
   initialState,
   reducers: {
     getInformationHome: (state, action) => {
-      console.log("check payload home: ", action.payload);
       state.temperature = action.payload.temperature;
       state.humidity = action.payload.humidity;
       state.moisture = action.payload.moisture;

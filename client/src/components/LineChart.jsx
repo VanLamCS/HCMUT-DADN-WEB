@@ -4,7 +4,7 @@ import { tokens } from "../theme";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
-const LineChart = ({ whatRender = "All" }) => {
+const LineChart = ({ whatRender = "All", value }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [showChart, setShowChart] = useState([]);
@@ -23,7 +23,7 @@ const LineChart = ({ whatRender = "All" }) => {
   const fetchData = async () => {
     if (
       Object.keys(dataMoisures).length !== 0 ||
-      Object.keys(dataHumidities).length !== 0 || 
+      Object.keys(dataHumidities).length !== 0 ||
       Object.keys(dataTemperatures).length !== 0
     ) {
       const renderData = [];
@@ -38,13 +38,13 @@ const LineChart = ({ whatRender = "All" }) => {
       } else if (whatRender === "Humidities") {
         renderData.push(dataHumidities);
       }
-      setShowChart(renderData)
+      setShowChart(renderData);
     }
   };
 
   useEffect(() => {
     fetchData();
-  }, [whatRender, dataMoisures, dataHumidities, dataTemperatures]);
+  }, [whatRender, dataMoisures, dataHumidities, dataTemperatures, value]);
 
   return (
     <ResponsiveLine
