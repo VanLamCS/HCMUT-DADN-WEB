@@ -36,11 +36,20 @@ export const getPump = () => API.get("api/data/lastpump");
 
 export const getLed = () => API.get("api/data/lastlight");
 
-export const get24SolidMoistures = () => API.get("api/data/daysoildmoistures");
+export const get24SolidMoistures = (date = new Date().toISOString()) => {
+  const apiUrl = `api/data/daysoildmoistures?date=${date}`;
+  return API.get(apiUrl);
+};
 
-export const get24SolidTemperatures = () => API.get("api/data/daytemperatures");
+export const get24SolidTemperatures = (date = new Date().toISOString()) => {
+  const apiUrl = `api/data/daytemperatures?date=${date}`;
+  return API.get(apiUrl);
+};
 
-export const get24SolidHumidities = () => API.get("api/data/dayhumidities");
+export const get24SolidHumidities = (date = new Date().toISOString()) => {
+  const apiUrl = `api/data/dayhumidities?date=${date}`;
+  return API.get(apiUrl);
+};
 
 export const getNotification = () => API.get("api/data/notifications");
 
@@ -52,8 +61,8 @@ export const getLowSolidMoisture = () => API.get("api/data/low-soild-moisture");
 export const getRangeSolidMoisture = () =>
   API.get("api/data/soild-moisture-range");
 
-export const postRangeSolidMoisture = (data) => 
-  API.post("api/data/soild-moisture-range", (data));
+export const postRangeSolidMoisture = (data) =>
+  API.post("api/data/soild-moisture-range", data);
 
-export const getPlantStatus = (limit = 10) => 
-  API.get(`http://localhost:5000/api/data/plants-status?limit=${limit}`)
+export const getPlantStatus = (limit = 10) =>
+  API.get(`http://localhost:5000/api/data/plants-status?limit=${limit}`);

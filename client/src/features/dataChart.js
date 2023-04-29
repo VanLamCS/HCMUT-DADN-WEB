@@ -15,9 +15,15 @@ export const dataDayChart = createSlice({
   initialState,
   reducers: {
     setDataCharts: (state, action) => {
-      state.dataDayMoisures = action.payload.dataDayMoisures;
-      state.dataDayHumidities = action.payload.dataDayHumidities;
-      state.dataDayTemperatures = action.payload.dataDayTemperatures;
+      if (action.payload.dataDayMoisures) {
+        state.dataDayMoisures = action.payload.dataDayMoisures;
+      }
+      if (action.payload.dataDayHumidities) {
+        state.dataDayHumidities = action.payload.dataDayHumidities;
+      }
+      if (action.payload.dataDayTemperatures) {
+        state.dataDayTemperatures = action.payload.dataDayTemperatures;
+      }
     },
   },
 });
