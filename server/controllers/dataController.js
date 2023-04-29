@@ -615,6 +615,7 @@ export const getPlantsStatus = async (req, res, next) => {
 };
 
 export const setSoildMoistureRange = async (req, res, next) => {
+    console.log("check: ", req.body);
     let { high, low } = req.body;
     if (!high && !low && high != 0 && low != 0) {
         res.status(400);
@@ -656,6 +657,7 @@ export const setSoildMoistureRange = async (req, res, next) => {
                 }
             });
         }
+        console.log("success")
         res.status(200).json({ message: "successful" });
     }
 };
