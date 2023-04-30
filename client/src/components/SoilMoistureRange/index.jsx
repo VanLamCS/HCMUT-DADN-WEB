@@ -1,4 +1,4 @@
-import { Slider, Stack, Typography } from "@mui/material";
+import { Button, Slider, Stack, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import {
@@ -11,6 +11,7 @@ import { sliderClasses } from "@mui/base/Slider";
 import styles from "./styles.module.css";
 import ChildFriendlyIcon from "@mui/icons-material/ChildFriendly";
 import WaterDropIcon from "@mui/icons-material/WaterDrop";
+import { toast } from "react-toastify";
 
 const blue = {
   100: "#DAECFF",
@@ -153,17 +154,12 @@ const SoilMoistureRange = () => {
 
   const handleChange = async (event, newValue) => {
     setRange({ ...range, high: newValue[1], low: newValue[0] });
-    const data = { high: newValue[1], low: newValue[0] };
-    const res = await postRangeSolidMoisture(data);
   };
 
-  function SliderValueLabel({ children }) {
-    return (
-      <span className="label">
-        <div className="value">{children}</div>
-      </span>
-    );
-  }
+  const handleSave = async () => {
+    const res = await postRangeSolidMoisture(range);
+    toast.success("Successfully update the range of soil moisture")
+  };
 
   const marks = [
     {
@@ -181,20 +177,28 @@ const SoilMoistureRange = () => {
       <Stack className={styles.container}>
         <Stack
           display="flex"
-          flexDirection="row"
+          sx={{ flexDirection: { xs: "column", md: "row" } }}
           justifyContent="space-between"
           alignItems="center"
           m="15px 30px 0 30px"
         >
-          <StyledSlider
-            value={[range.low, range.high]}
-            min={0}
-            max={100}
-            onChange={handleChange}
-            // slots={{ valueLabel: SliderValueLabel }}
-            marks={marks}
-            step={1}
-          />
+          <Box
+            sx={{
+              width: { xs: "100%", md: "80%" },
+              marginBottom: { xs: "10px", md: "0px" },
+            }}
+            mt="20px"
+          >
+            <StyledSlider
+              value={[range.low, range.high]}
+              min={0}
+              max={100}
+              onChange={handleChange}
+              marks={marks}
+              step={1}
+            />
+          </Box>
+          <button onClick={handleSave} className={styles.button}>save</button>
         </Stack>
         <Stack
           display="flex"
@@ -204,7 +208,6 @@ const SoilMoistureRange = () => {
           m="40px 30px 0 30px"
         >
           <Typography
-            height="30px"
             fontWeight={700}
             fontSize="1.4rem"
             textTransform="uppercase"
