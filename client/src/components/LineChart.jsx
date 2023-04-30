@@ -1,13 +1,16 @@
 import { ResponsiveLine } from "@nivo/line";
-import { useTheme } from "@mui/material";
+import { Stack, Typography, useTheme } from "@mui/material";
 import { tokens } from "../theme";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { CollectionsBookmarkOutlined } from "@mui/icons-material";
 
 const LineChart = ({ whatRender = "All", value }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [showChart, setShowChart] = useState([]);
+  const [date, setDate] = useState("");
+
   const dataMoisures = useSelector(
     (state) => state.dataDayChart.dataDayMoisures
   );
@@ -21,25 +24,34 @@ const LineChart = ({ whatRender = "All", value }) => {
   );
 
   const fetchData = async () => {
+    const renderData = [];
     if (
-      Object.keys(dataMoisures).length !== 0 ||
-      Object.keys(dataHumidities).length !== 0 ||
+      whatRender == "All" &&
+      Object.keys(dataMoisures).length !== 0 &&
+      Object.keys(dataHumidities).length !== 0 &&
       Object.keys(dataTemperatures).length !== 0
     ) {
-      const renderData = [];
-      if (whatRender == "All") {
-        renderData.push(dataMoisures);
-        renderData.push(dataHumidities);
-        renderData.push(dataTemperatures);
-      } else if (whatRender === "Moisures") {
-        renderData.push(dataMoisures);
-      } else if (whatRender === "Temperatures") {
-        renderData.push(dataTemperatures);
-      } else if (whatRender === "Humidities") {
-        renderData.push(dataHumidities);
-      }
-      setShowChart(renderData);
+      renderData.push(dataMoisures);
+      renderData.push(dataHumidities);
+      renderData.push(dataTemperatures);
+    } else if (
+      whatRender === "Moisures" &&
+      Object.keys(dataMoisures).length !== 0
+    ) {
+      // console.log("lag lag", dataMoisures)
+      renderData.push(dataMoisures);
+    } else if (
+      whatRender === "Temperatures" &&
+      Object.keys(dataTemperatures).length !== 0
+    ) {
+      renderData.push(dataTemperatures);
+    } else if (
+      whatRender === "Humidities" &&
+      Object.keys(dataHumidities).length !== 0
+    ) {
+      renderData.push(dataHumidities);
     }
+    setShowChart(renderData);
   };
 
   useEffect(() => {

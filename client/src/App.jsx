@@ -224,9 +224,11 @@ function App() {
       })
     );
   };
+
   useEffect(() => {
     dataProcessing();
   }, []);
+
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>

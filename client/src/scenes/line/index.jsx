@@ -93,13 +93,17 @@ const Line = ({ whatRender }) => {
     fetchData();
   }, [value]);
 
+  useEffect(() => {
+    setValue(dayjs());
+  }, [whatRender])
+
   return (
     <Box m="20px">
       <Header
         title="Line Chart"
         subtitle={`${whatRender} for the last 24 hours`}
       />
-      <Box width="50%">
+      <Box sx={{ width: { md: "50%", xs: "100%"}}}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DemoContainer components={["DateTimePicker"]}>
             <DateTimePicker
