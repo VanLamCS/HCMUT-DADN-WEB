@@ -66,4 +66,4 @@ export const postRangeSolidMoisture = (data) =>
   API.post("api/data/soild-moisture-range", data);
 
 export const getPlantStatus = (limit = 10) =>
-  API.get(`http://localhost:5000/api/data/plants-status?limit=${limit}`);
+  API.get(`api/data/plants-status?limit=${limit}`);

@@ -15,7 +15,7 @@ import { CircularProgress } from "@mui/material";
 import { io } from "socket.io-client";
 import { useSelector } from "react-redux";
 
-const socket = io("http://localhost:8000");
+const socket = io(process.env.REACT_APP_BASE_URL);
 
 // global.socket = socket
 
@@ -28,10 +28,14 @@ const ToggleButton = ({
 }) => {
   const [isOn, setIsOn] = useState(false);
   const [disable, setDisable] = useState(false);
-  const initialStateFan = useSelector(state => state.deviceStatus.fanStatus)
-  const initialStatePump = useSelector(state => state.deviceStatus.pumpStatus)
-  const initialStateLed = useSelector(state => state.deviceStatus.ledStatus)
-  const initialStateMode = useSelector(state => state.deviceStatus.modeStatus)
+  const initialStateFan = useSelector((state) => state.deviceStatus.fanStatus);
+  const initialStatePump = useSelector(
+    (state) => state.deviceStatus.pumpStatus
+  );
+  const initialStateLed = useSelector((state) => state.deviceStatus.ledStatus);
+  const initialStateMode = useSelector(
+    (state) => state.deviceStatus.modeStatus
+  );
 
   const handleToggle = async (e) => {
     setIsOn((toggle) => !toggle);

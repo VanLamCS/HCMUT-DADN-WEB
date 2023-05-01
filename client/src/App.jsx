@@ -32,7 +32,7 @@ import { getDeviceStatus } from "./features/dataDashboard";
 import { getInformationHome } from "./features/dataHome";
 import { io } from "socket.io-client";
 import { dispatchPlantStatus } from "./features/dataPlantStatus";
-const socket = io("http://localhost:8000"); // Replace with your server's URL
+const socket = io(process.env.REACT_APP_BASE_URL); // Replace with your server's URL
 
 function App() {
   const [theme, colorMode] = useMode();

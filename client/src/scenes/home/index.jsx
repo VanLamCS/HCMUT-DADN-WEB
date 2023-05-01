@@ -11,7 +11,7 @@ import { useState, useEffect } from "react";
 import { io } from "socket.io-client";
 import { useSelector, useDispatch } from "react-redux";
 
-const socket = io("http://localhost:8000"); // Replace with your server's URL
+const socket = io(process.env.REACT_APP_BASE_URL); // Replace with your server's URL
 
 const Home = () => {
   const theme = useTheme();

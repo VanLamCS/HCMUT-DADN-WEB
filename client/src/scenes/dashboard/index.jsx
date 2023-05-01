@@ -5,11 +5,11 @@ import ToggleDashBoard from "../../components/ToggleDashBoard";
 import { io } from "socket.io-client";
 import SoilMoistureRange from "../../components/SoilMoistureRange";
 
-const socket = io("http://localhost:8000"); 
+const socket = io(process.env.REACT_APP_BASE_URL);
 
 const DashBoard = () => {
   const isMobile = useMediaQuery("(max-width: 600px)");
-  const [isAutoMode, setIsAutoMode] = useState(false)
+  const [isAutoMode, setIsAutoMode] = useState(false);
 
   return (
     <Box m="20px">
@@ -24,19 +24,35 @@ const DashBoard = () => {
       </Box>
       <Grid container>
         <Grid item xs={12} md={6}>
-          <ToggleDashBoard isAutoMode={isAutoMode} setIsAutoMode={setIsAutoMode} title="Fan" />
+          <ToggleDashBoard
+            isAutoMode={isAutoMode}
+            setIsAutoMode={setIsAutoMode}
+            title="Fan"
+          />
         </Grid>
         <Grid item xs={12} md={6}>
-          <ToggleDashBoard isAutoMode={isAutoMode} setIsAutoMode={setIsAutoMode} title="Pump" />
+          <ToggleDashBoard
+            isAutoMode={isAutoMode}
+            setIsAutoMode={setIsAutoMode}
+            title="Pump"
+          />
         </Grid>
         <Grid item xs={12} md={6}>
-          <ToggleDashBoard isAutoMode={isAutoMode} setIsAutoMode={setIsAutoMode} title="Auto Mode" />
+          <ToggleDashBoard
+            isAutoMode={isAutoMode}
+            setIsAutoMode={setIsAutoMode}
+            title="Auto Mode"
+          />
         </Grid>
         <Grid item xs={12} md={6}>
-          <ToggleDashBoard isAutoMode={isAutoMode} setIsAutoMode={setIsAutoMode} title="Led" />
+          <ToggleDashBoard
+            isAutoMode={isAutoMode}
+            setIsAutoMode={setIsAutoMode}
+            title="Led"
+          />
         </Grid>
       </Grid>
-      <SoilMoistureRange/>
+      <SoilMoistureRange />
     </Box>
   );
 };
