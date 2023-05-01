@@ -10,6 +10,7 @@ import { useMediaQuery } from "@mui/material";
 import { useState, useEffect } from "react";
 import { io } from "socket.io-client";
 import { useSelector, useDispatch } from "react-redux";
+import WaterDropIcon from "@mui/icons-material/WaterDrop";
 
 const socket = io(process.env.REACT_APP_BASE_URL); // Replace with your server's URL
 
@@ -167,7 +168,7 @@ const Home = () => {
             progress="0.50"
             increase={renderHumidity}
             icon={
-              <PercentIcon
+              <WaterDropIcon
                 sx={{
                   color: colors.greenAccent[600],
                   fontSize: "36px",
@@ -185,11 +186,11 @@ const Home = () => {
         >
           <StatBox
             title="1,325,134"
-            subtitle="Soild Moisture"
+            subtitle="Soil Moisture"
             progress="0.80"
             increase={renderSoildMoisture}
             icon={
-              <PercentIcon
+              <WaterDropIcon
                 sx={{
                   color: colors.greenAccent[600],
                   fontSize: "36px",
@@ -274,7 +275,7 @@ const Home = () => {
               fontWeight="600"
             >
               <Typography variant="h3" color="#4cceac">
-                Notification
+                Notifications
               </Typography>
 
               {Object.keys(renderNotification).length !== 0 &&

@@ -13,20 +13,22 @@ const Login = ({ reload, setReload }) => {
   const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    const form = { email, password };
-    const { data } = await loginUser(form);
-    const name = data?.name;
-    dispatch(setUserInfo({ email, name }));
-    localStorage.setItem("name", name);
-    localStorage.setItem("email", email);
-    if (data) {
-      toast.success("Login successfully!!!");
-      localStorage.setItem("user", JSON.stringify(data));
-      setReload(!reload);
-      navigate("/");
-      return;
-    }
+    try {
+      e.preventDefault();
+      const form = { email, password };
+      const { data } = await loginUser(form);
+      const name = data?.name;
+      dispatch(setUserInfo({ email, name }));
+      localStorage.setItem("name", name);
+      localStorage.setItem("email", email);
+      if (data) {
+        toast.success("Login successfully!!!");
+        localStorage.setItem("user", JSON.stringify(data));
+        setReload(!reload);
+        navigate("/");
+        return;
+      }
+    } catch (error) {}
     toast.error("Something wrong");
   };
 

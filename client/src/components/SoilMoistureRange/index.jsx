@@ -9,7 +9,6 @@ import {
 import { styled, alpha, Box } from "@mui/system";
 import { sliderClasses } from "@mui/base/Slider";
 import styles from "./styles.module.css";
-import ChildFriendlyIcon from "@mui/icons-material/ChildFriendly";
 import WaterDropIcon from "@mui/icons-material/WaterDrop";
 import { toast } from "react-toastify";
 

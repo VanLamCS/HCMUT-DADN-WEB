@@ -1,15 +1,13 @@
 import { ResponsiveLine } from "@nivo/line";
-import { Stack, Typography, useTheme } from "@mui/material";
+import { useTheme } from "@mui/material";
 import { tokens } from "../theme";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { CollectionsBookmarkOutlined } from "@mui/icons-material";
 
 const LineChart = ({ whatRender = "All", value }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [showChart, setShowChart] = useState([]);
-  const [date, setDate] = useState("");
 
   const dataMoisures = useSelector(
     (state) => state.dataDayChart.dataDayMoisures
@@ -123,7 +121,7 @@ const LineChart = ({ whatRender = "All", value }) => {
         tickSize: 3,
         tickPadding: 5,
         tickRotation: 0,
-        legend: "value", // added
+        legend: whatRender === "Temperatures" ? `unit(°C)` : "unit(%)", // added
         legendOffset: -40,
         legendPosition: "middle",
       }}

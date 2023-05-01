@@ -101,7 +101,7 @@ const Line = ({ whatRender }) => {
     <Box m="20px">
       <Header
         title="Line Chart"
-        subtitle={`${whatRender} for the last 24 hours`}
+        subtitle={`${whatRender} for 24 hours`}
       />
       <Box sx={{ width: { md: "50%", xs: "100%"}}}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
