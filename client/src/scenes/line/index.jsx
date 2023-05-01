@@ -24,7 +24,7 @@ const Line = ({ whatRender }) => {
 
   const fetchData = async () => {
     try {
-      if (whatRender === "Moisures") {
+      if (whatRender === "Soil Moistures") {
         const resMoisures = await get24SolidMoistures(value.toISOString());
         const tempMoisures = resMoisures.data.data;
         tempMoisures.forEach((obj) => {
@@ -34,7 +34,7 @@ const Line = ({ whatRender }) => {
           delete obj.value;
         });
         const dataChartMoisures = {
-          id: "Moisures",
+          id: "Soil Moistures",
           data: tempMoisures,
         };
         dispatch(
@@ -95,15 +95,12 @@ const Line = ({ whatRender }) => {
 
   useEffect(() => {
     setValue(dayjs());
-  }, [whatRender])
+  }, [whatRender]);
 
   return (
     <Box m="20px">
-      <Header
-        title="Line Chart"
-        subtitle={`${whatRender} for 24 hours`}
-      />
-      <Box sx={{ width: { md: "50%", xs: "100%"}}}>
+      <Header title="Line Chart" subtitle={`${whatRender} for 24 hours`} />
+      <Box sx={{ width: { md: "50%", xs: "100%" } }}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DemoContainer components={["DateTimePicker"]}>
             <DateTimePicker

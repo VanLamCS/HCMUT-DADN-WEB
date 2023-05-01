@@ -33,7 +33,7 @@ const LineChart = ({ whatRender = "All", value }) => {
       renderData.push(dataHumidities);
       renderData.push(dataTemperatures);
     } else if (
-      whatRender === "Moisures" &&
+      whatRender === "Soil Moistures" &&
       Object.keys(dataMoisures).length !== 0
     ) {
       // console.log("lag lag", dataMoisures)

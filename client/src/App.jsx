@@ -262,7 +262,7 @@ function App() {
                   <Route path="/form" element={<Form />} />
                   <Route
                     path="/line-moisures"
-                    element={<Line whatRender="Moisures" />}
+                    element={<Line whatRender="Soil Moistures" />}
                   />
                   <Route
                     path="/line-temperatures"

@@ -32,7 +32,7 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
       onClick={() => setSelected(title)}
       icon={icon}
     >
-      <Typography m="20px 0" fontSize="0.9rem">{title}</Typography>
+      <Typography m="20px 0" fontSize="0.8rem">{title}</Typography>
       <Link to={to} />
     </MenuItem>
   );
@@ -167,7 +167,7 @@ const Sidebar = ({ openMobile, setOpenMobile }) => {
               Charts
             </Typography>
             <Item
-              title="Moisures Chart"
+              title="Soil Moistures Chart"
               to="/line-moisures"
               icon={<PieChartOutlineOutlinedIcon />}
               selected={selected}

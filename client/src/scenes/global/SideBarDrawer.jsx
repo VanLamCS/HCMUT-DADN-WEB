@@ -139,7 +139,7 @@ const SidebarDrawer = ({ openMobile, setOpenMobile }) => {
               Charts
             </Typography>
             <Item
-              title="Moisures Chart"
+              title="Soil Moistures Chart"
               to="/line-moisures"
               icon={<PieChartOutlineOutlinedIcon />}
               selected={selected}
