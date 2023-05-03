@@ -167,7 +167,7 @@ function App() {
         time: `${month}/${day}/${year} ${hours}:${minutes}:${seconds}`,
       };
 
-      const updatedDataPlantStatus = [newData, ...updatedData];
+      const updatedDataPlantStatus = [newData, ...updatedDataPlantStatus];
       dispatch(dispatchPlantStatus(updatedDataPlantStatus));
     });
 
