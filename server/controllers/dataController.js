@@ -408,9 +408,7 @@ export const getDayTemperatures = async (req, res, next) => {
     let params;
     let now = true;
     if (date && isIsoDate(date)) {
-        let today = new Date().toLocaleString("en-US", {
-            timeZone: "Asia/Saigon",
-        });
+        let today = new Date();
         let d = new Date(date);
         if (
             today.getFullYear() == d.getFullYear() &&
@@ -471,9 +469,7 @@ export const getDayHumidities = async (req, res, next) => {
     let params;
     let now = true;
     if (date && isIsoDate(date)) {
-        let today = new Date().toLocaleString("en-US", {
-            timeZone: "Asia/Saigon",
-        });
+        let today = new Date();
         let d = new Date(date);
         if (
             today.getFullYear() == d.getFullYear() &&
@@ -534,9 +530,7 @@ export const getDaySoildMoistures = async (req, res, next) => {
     let params;
     let now = true;
     if (date && isIsoDate(date)) {
-        let today = new Date().toLocaleString("en-US", {
-            timeZone: "Asia/Saigon",
-        });
+        let today = new Date();
         let d = new Date(date);
         if (
             today.getFullYear() == d.getFullYear() &&
