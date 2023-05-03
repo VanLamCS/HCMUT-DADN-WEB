@@ -167,8 +167,11 @@ function App() {
         time: `${month}/${day}/${year} ${hours}:${minutes}:${seconds}`,
       };
 
-      const updatedDataPlantStatus = [newData, ...updatedDataPlantStatus];
-      dispatch(dispatchPlantStatus(updatedDataPlantStatus));
+      const updatedDataPlantStatusNotification = [
+        newData,
+        ...updatedDataPlantStatus,
+      ];
+      dispatch(dispatchPlantStatus(updatedDataPlantStatusNotification));
     });
 
     //Line chart
