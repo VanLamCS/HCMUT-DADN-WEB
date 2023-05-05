@@ -329,7 +329,7 @@ const Home = () => {
               fontWeight="600"
             >
               <Typography variant="h3" color="#4cceac">
-                Plant Status
+                Entrance history
               </Typography>
 
               {Object.keys(renderPlantStatus).length !== 0 &&
